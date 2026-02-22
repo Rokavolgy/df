@@ -16,6 +16,5 @@ RUN dnf -y clean all
 # Add build script
 COPY build-handbrake.sh /build-handbrake.sh
 RUN chmod +x /build-handbrake.sh
-WORKDIR /work
-RUN sudo ./build-handbrake.sh
+RUN /build-handbrake.sh
 ENTRYPOINT ["sleep","20"]
