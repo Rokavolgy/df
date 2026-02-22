@@ -1,0 +1,28 @@
+FROM public.ecr.aws/amazonlinux/amazonlinux:2023
+
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+ENV PATH=/usr/local/bin:$PATH
+
+# Install system packages and development libraries
+RUN dnf makecache \
+ && dnf -y update \
+ && dnf -y groupinstall "Development Tools" \
+ && dnf -y install \
+    rpm-build redhat-rpm-config rpmdevtools rcs \
+    pkgconf-pkg-config pkgconf \
+    meson ninja-build cmake autoconf automake libtool \
+    gcc gcc-c++ git tar python3 python3-pip \
+    fribidi-devel harfbuzz-devel freetype-devel \
+    jansson-devel libogg-devel libvorbis-devel \
+    libtheora-devel libvpx-devel x265-devel \
+    numactl-devel bzip2-devel zlib-devel libass-devel \
+    nasm yasm pkgconfig which \
+ && dnf -y clean all
+
+# Add build script
+COPY build-handbrake.sh /build-handbrake.sh
+RUN chmod +x /build-handbrake.sh
+
+WORKDIR /work
+ENTRYPOINT ["/build-handbrake.sh"]
