@@ -64,7 +64,7 @@ cd x264
 # Optionally checkout a stable tag. Comment out if you want latest master.
 # Example: git checkout stable
 # Use default branch for latest stable-ish code
-./configure --enable-shared --enable-pic --prefix="/usr/" > /dev/null
+./configure --enable-shared --enable-pic --prefix="$PREFIX" > /dev/null
 make -j"$NPROC" > /dev/null
 make install
 ldconfig
@@ -200,7 +200,7 @@ fi
 # Verify HandBrakeCLI
 if [ -x /usr/local/bin/HandBrakeCLI ]; then
   echo "HandBrakeCLI built successfully"
-  /usr/local/bin/HandBrakeCLI --version || true
+  LD_LIBRARY_PATH=/usr/local/lib64:/usr/local/lib:$LD_LIBRARY_PATH /usr/local/bin/HandBrakeCLI --version || true
 else
   echo "ERROR: HandBrakeCLI not found after build"
   ls -la /usr/local/bin "$OUTDIR" || true
