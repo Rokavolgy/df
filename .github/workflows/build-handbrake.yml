@@ -13,9 +13,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build Docker image
-        run: docker build -f Dockerfile.amazonlinux -t handbrake-al2023:latest .
+      - name: Enable Docker BuildKit
+        run: |
+          export DOCKER_BUILDKIT=1
+          echo "DOCKER_BUILDKIT=1" >> $GITHUB_ENV
       
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Build Docker image with local cache
+        run: |
+          mkdir -p .buildx-cache
+          docker buildx build \
+            --progress=plain \
+            --tag handbrake-al2023:latest \
+            --cache-from=type=local,src=.buildx-cache \
+            --cache-to=type=local,dest=.buildx-cache,mode=max \
+            -f Dockerfile.amazonlinux .
+
       - name: Create container
         run: docker create --name handbrake-build handbrake-al2023:latest
       
