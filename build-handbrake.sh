@@ -22,9 +22,9 @@ cd "$WORKDIR"
 # Update and install system packages
 echo "Installing system packages"
 dnf makecache
-dnf -y update
+dnf -y update 
 
-dnf -y groupinstall "Development Tools"
+dnf -y groupinstall "Development Tools" 
 dnf -y install \
   rpm-build redhat-rpm-config rpmdevtools \
   pkgconf-pkg-config pkgconf \
@@ -35,7 +35,7 @@ dnf -y install \
   libtheora-devel libvpx-devel x265-devel \
   numactl-devel bzip2-devel zlib-devel libass-devel \
   nasm yasm pkgconfig which wget make perl \
-  autoconf-archive libsndfile-devel speexdsp-devel speex-devel libjpeg-turbo-devel libjpeg-turbo
+  autoconf-archive libsndfile-devel speexdsp-devel speex-devel libjpeg-turbo-devel libjpeg-turbo > /dev/null
 
 # Ensure basic tools are available
 which git
@@ -62,8 +62,8 @@ cd x264
 # Optionally checkout a stable tag. Comment out if you want latest master.
 # Example: git checkout stable
 # Use default branch for latest stable-ish code
-./configure --enable-shared --enable-pic --prefix="$PREFIX"
-make -j"$NPROC"
+./configure --enable-shared --enable-pic --prefix="$PREFIX" > /dev/null
+make -j"$NPROC" > /dev/null
 make install
 ldconfig
 
@@ -101,7 +101,7 @@ wget -q https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar
 tar xf lame-3.100.tar.gz
 cd lame-3.100
 ./configure --enable-shared --prefix="$PREFIX"
-make -j"$NPROC"
+make -j"$NPROC" > /dev/null
 make install
 ldconfig
 
@@ -148,7 +148,7 @@ git checkout master
 
 # Configure and build CLI only. We built system x264 and libmp3lame, but also allow HandBrake to build bundled codecs if needed.
 # --disable-gtk ensures no GUI dependencies are required.
-./configure --disable-gtk --disable-nvenc --disable-qsv -launch-jobs=$(nproc) --force --launch
+./configure --disable-gtk --disable-nvenc --disable-qsv -launch-jobs=$(nproc) --force CFLAGS="-I/usr/include/turbojpeg -I/usr/local/include" --launch 
 
 # Install HandBrakeCLI to /usr/local
 make --directory=build install
