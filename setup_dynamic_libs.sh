@@ -1,7 +1,7 @@
 #!/bin/bash
 set -ex
 
-# build-handbrake-giga.sh
+# build-handbrake.sh
 # Builds x264, LAME, speexdsp/speex (if needed), then HandBrakeCLI on Amazon Linux 2023.
 # No GUI. Installs libraries to /usr/local and HandBrakeCLI to /usr/local/bin.
 
@@ -35,7 +35,7 @@ dnf -y install \
   libtheora-devel libvpx-devel x265-devel \
   numactl-devel bzip2-devel zlib-devel libass-devel \
   nasm yasm pkgconfig which wget make perl \
-  autoconf-archive libsndfile-devel speexdsp-devel speex-devel libjpeg-turbo-devel libjpeg-turbo turbojpeg-devel
+  autoconf-archive libsndfile-devel speexdsp-devel speex-devel libjpeg-turbo-devel libjpeg-turbo turbojpeg-devel lame libatomic
 
 # Ensure basic tools are available
 which git
@@ -127,17 +127,17 @@ ldconfig
 # -----------------------------------------------------------------------------
 # Build and install LAME (libmp3lame) from source
 # -----------------------------------------------------------------------------
-echo "Building LAME (libmp3lame) from source"
+#echo "Building LAME (libmp3lame) from source"
 
-cd "$WORKDIR"
-rm -rf lame-3.100 lame-3.100.tar.gz
-wget -q https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz
-tar xf lame-3.100.tar.gz
-cd lame-3.100
-./configure --enable-shared --prefix="$PREFIX"
-make -j"$NPROC" > /dev/null
-make install
-ldconfig
+#cd "$WORKDIR"
+#rm -rf lame-3.100 lame-3.100.tar.gz
+#wget -q https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz
+#tar xf lame-3.100.tar.gz
+#cd lame-3.100
+#./configure --enable-shared --prefix="$PREFIX"
+#make -j"$NPROC" > /dev/null
+#make install
+#ldconfig
 
 # Verify libmp3lame
 if pkg-config --exists libmp3lame; then
@@ -164,3 +164,5 @@ export LDFLAGS="-L$PREFIX/lib $LDFLAGS"
 ln -sf /usr/local/include/turbojpeg.h /usr/include/turbojpeg.h || true
 ln -sf /usr/local/lib64/pkgconfig/libturbojpeg.pc /usr/lib64/pkgconfig/libturbojpeg.pc || true
 ldconfig || true
+chmod +x ./HandBrakeCLI
+LD_LIBRARY_PATH=/usr/local/lib64:/usr/local/lib:$LD_LIBRARY_PATH ./HandBrakeCLI --version
