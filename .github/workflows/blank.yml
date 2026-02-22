@@ -12,13 +12,11 @@ jobs:
       - name: Install deps
         run: |
           sudo apt-get update
-          sudo apt-get install -y autoconf automake build-essential \
-            cmake git libass-dev libbz2-dev libfontconfig-dev \
-            libfreetype-dev libfribidi-dev libharfbuzz-dev \
-            libjansson-dev liblzma-dev libmp3lame-dev libnuma-dev \
-            libogg-dev libopus-dev libsamplerate-dev libspeex-dev \
-            libtheora-dev libtool libvorbis-dev libx264-dev \
-            libxml2-dev meson nasm ninja-build patch python3 zlib1g-dev
+          sudo apt-get install -y autoconf automake build-essential cmake git libass-dev libbz2-dev libfontconfig-dev \
+          libfreetype-dev libfribidi-dev libharfbuzz-dev libjansson-dev liblzma-dev libmp3lame-dev libnuma-dev libogg-dev \
+          libopus-dev libsamplerate0-dev libspeex-dev libtheora-dev libtool libtool-bin libturbojpeg0-dev libvorbis-dev libx264-dev \
+          libxml2-dev libvpx-dev m4 make meson nasm ninja-build patch pkg-config tar zlib1g-dev curl libssl-dev clang
+          
       
       - name: Build
         run: ./configure --launch-jobs=$(nproc) --disable-gtk --enable-static --launch
