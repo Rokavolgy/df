@@ -13,15 +13,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Enable Docker BuildKit
-        run: |
-          export DOCKER_BUILDKIT=1
-          echo "DOCKER_BUILDKIT=1" >> $GITHUB_ENV
+      - name: Enable BuildKit
+        run: echo "DOCKER_BUILDKIT=1" >> $GITHUB_ENV
       
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       
-      - name: Build Docker image with local cache
+      - name: Restore buildx cache
+        uses: actions/cache@v4
+        with:
+          path: .buildx-cache
+          key: buildx-cache-${{ runner.os }}-${{ hashFiles('Dockerfile.amazonlinux','build-handbrake.sh') }}
+          restore-keys: buildx-cache-${{ runner.os }}-
+      
+      - name: Build Docker image with local buildx cache and load image
         run: |
           mkdir -p .buildx-cache
           docker buildx build \
@@ -29,6 +34,7 @@ jobs:
             --tag handbrake-al2023:latest \
             --cache-from=type=local,src=.buildx-cache \
             --cache-to=type=local,dest=.buildx-cache,mode=max \
+            --load \
             -f Dockerfile.amazonlinux .
 
       - name: Create container
