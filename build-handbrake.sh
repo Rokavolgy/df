@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/bash
+set -ex
 
 # build-handbrake-giga.sh
 # Builds x264, LAME, speexdsp/speex (if needed), then HandBrakeCLI on Amazon Linux 2023.
