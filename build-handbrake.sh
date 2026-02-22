@@ -44,10 +44,12 @@ which nasm
 which yasm
 
 # Export pkg-config path for /usr/local
-export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:/usr/lib64/pkgconfig:$PKG_CONFIG_PATH"
-export CPPFLAGS="-I/usr/include -I$PREFIX/include $CPPFLAGS" 
-export LDFLAGS="-L/usr/lib64 -L$PREFIX/lib $LDFLAGS"
-export PATH="$PREFIX/bin:$PATH"
+export PREFIX=/usr/local
+export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
+export CPPFLAGS="-I$PREFIX/include -I/usr/include $CPPFLAGS"
+export CFLAGS="-I$PREFIX/include -I/usr/include $CFLAGS"
+export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
+export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
 
 # -----------------------------------------------------------------------------
 # Build and install x264 from source
@@ -158,6 +160,10 @@ export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
 export CPPFLAGS="-I$PREFIX/include $CPPFLAGS"
 export LDFLAGS="-L$PREFIX/lib $LDFLAGS"
 
+
+ln -sf /usr/local/include/turbojpeg.h /usr/include/turbojpeg.h || true
+ln -sf /usr/local/lib64/pkgconfig/libturbojpeg.pc /usr/lib64/pkgconfig/libturbojpeg.pc || true
+ldconfig || true
 # -----------------------------------------------------------------------------
 # Clone and build HandBrakeCLI (no GUI)
 # -----------------------------------------------------------------------------
@@ -176,11 +182,11 @@ if [ -n "$LATEST_TAG" ]; then
 fi
 
 # Override to master
-git checkout master
+# git checkout master
 
 # Configure and build CLI only. We built system x264 and libmp3lame, but also allow HandBrake to build bundled codecs if needed.
 # --disable-gtk ensures no GUI dependencies are required.
-./configure --disable-gtk --disable-nvenc --disable-qsv -launch-jobs=$(nproc) --force CFLAGS="-I/usr/include/turbojpeg -I/usr/local/include" --launch 
+PKG_CONFIG_PATH="$PKG_CONFIG_PATH" CPPFLAGS="$CPPFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" ./configure --disable-gtk --disable-nvenc --disable-qsv -launch-jobs=$(nproc) --force CFLAGS="-I/usr/include/turbojpeg -I/usr/local/include" --launch 
 
 # Install HandBrakeCLI to /usr/local
 make --directory=build install
