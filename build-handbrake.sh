@@ -15,17 +15,17 @@ echo "Install prefix: $PREFIX"
 echo "Parallel jobs: $NPROC"
 
 # Ensure workdir exists
-sudo mkdir -p "$WORKDIR"
-sudo chown "$(id -u):$(id -g)" "$WORKDIR"
+mkdir -p "$WORKDIR"
+chown "$(id -u):$(id -g)" "$WORKDIR"
 cd "$WORKDIR"
 
 # Update and install system packages
 echo "Installing system packages"
-sudo dnf makecache
-sudo dnf -y update
+dnf makecache
+dnf -y update
 
-sudo dnf -y groupinstall "Development Tools"
-sudo dnf -y install \
+dnf -y groupinstall "Development Tools"
+dnf -y install \
   rpm-build redhat-rpm-config rpmdevtools \
   pkgconf-pkg-config pkgconf \
   meson ninja-build cmake autoconf automake libtool \
@@ -64,8 +64,8 @@ cd x264
 # Use default branch for latest stable-ish code
 ./configure --enable-shared --enable-pic --prefix="$PREFIX"
 make -j"$NPROC"
-sudo make install
-sudo ldconfig
+make install
+ldconfig
 
 # Verify x264
 if pkg-config --exists x264; then
@@ -104,8 +104,8 @@ fi
 # Build and install speexdsp and speex from source if pkg-config can't find them
 # -----------------------------------------------------------------------------
 echo "Checking speex and speexdsp"
-sudo dnf makecache 
-sudo dnf install -y speexdsp-devel speex-devel pkgconf-pkg-config
+dnf makecache 
+dnf install -y speexdsp-devel speex-devel pkgconf-pkg-config
 
 # Re-export pkg-config path in case files were added
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
@@ -134,7 +134,7 @@ fi
 ./configure --disable-gtk --disable-nvenc --disable-qsv -launch-jobs=$(nproc) --force 
 
 # Install HandBrakeCLI to /usr/local
-sudo make --directory=build install
+make --directory=build install
 
 # Verify HandBrakeCLI
 if [ -x /usr/local/bin/HandBrakeCLI ]; then
