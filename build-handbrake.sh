@@ -35,7 +35,7 @@ dnf -y install \
   libtheora-devel libvpx-devel x265-devel \
   numactl-devel bzip2-devel zlib-devel libass-devel \
   nasm yasm pkgconfig which wget make perl \
-  autoconf-archive libsndfile-devel speexdsp-devel speex-devel
+  autoconf-archive libsndfile-devel speexdsp-devel speex-devel libjpeg-turbo-devel libjpeg-turbo
 
 # Ensure basic tools are available
 which git
@@ -75,6 +75,20 @@ else
   echo "Warning: pkg-config cannot find x264. Listing $PREFIX/lib/pkgconfig"
   ls -la "$PREFIX/lib/pkgconfig" || true
 fi
+
+#Verify libjpeg
+if pkg-config --exists libjpeg; then
+  echo "libjpeg-turbo found via pkg-config"
+  pkg-config --modversion libjpeg
+elif pkg-config --exists turbojpeg; then
+  echo "turbojpeg found via pkg-config"
+  pkg-config --modversion turbojpeg
+else
+  echo "Warning: TurboJPEG NOT found via pkg-config"
+  echo "Listing $PREFIX/lib/pkgconfig"
+  ls -la "$PREFIX/lib/pkgconfig" || true
+fi
+
 
 # -----------------------------------------------------------------------------
 # Build and install LAME (libmp3lame) from source
