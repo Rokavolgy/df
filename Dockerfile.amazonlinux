@@ -17,8 +17,10 @@ RUN dnf makecache \
     jansson-devel libogg-devel libvorbis-devel \
     libtheora-devel libvpx-devel x265-devel \
     numactl-devel bzip2-devel zlib-devel libass-devel \
-    nasm yasm pkgconfig which \
+    nasm yasm pkgconfig which wget make perl \
+    autoconf-archive libsndfile-devel \
  && dnf -y clean all
+
 
 # Add build script
 COPY build-handbrake.sh /build-handbrake.sh
