@@ -35,7 +35,7 @@ dnf -y install \
   libtheora-devel libvpx-devel x265-devel \
   numactl-devel bzip2-devel zlib-devel libass-devel \
   nasm yasm pkgconfig which wget make perl \
-  autoconf-archive libsndfile-devel speexdsp-devel speex-devel libjpeg-turbo-devel libjpeg-turbo turbojpeg-devel
+  autoconf-archive libsndfile-devel speexdsp-devel speex-devel libjpeg-turbo-devel libjpeg-turbo turbojpeg-devel lame libatomic
 
 # Ensure basic tools are available
 which git
