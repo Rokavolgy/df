@@ -129,9 +129,12 @@ if [ -n "$LATEST_TAG" ]; then
   git checkout "$LATEST_TAG"
 fi
 
+# Override to master
+git checkout master
+
 # Configure and build CLI only. We built system x264 and libmp3lame, but also allow HandBrake to build bundled codecs if needed.
 # --disable-gtk ensures no GUI dependencies are required.
-./configure --disable-gtk --disable-nvenc --disable-qsv -launch-jobs=$(nproc) --force 
+./configure --disable-gtk --disable-nvenc --disable-qsv -launch-jobs=$(nproc) --force --launch
 
 # Install HandBrakeCLI to /usr/local
 make --directory=build install
