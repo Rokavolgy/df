@@ -10,7 +10,7 @@ Before running the dynamic lib install script make sure Amazon SPAL repository i
 dnf install -y spal-release
 ```
 
-It is also possible to run inside after the build in the container.
+It is also possible to run inside after the build in the container. The script installs x264 to /usr/ , it seems /usr/local/ doesn't seem to work if LD_LIBRARY_PATH=/usr/local/lib64:/usr/local/lib:$LD_LIBRARY_PATH is not specified.
 
 ## Requirements
 
