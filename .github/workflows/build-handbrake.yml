@@ -13,26 +13,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build Amazon Linux Docker image
+      - name: Build Docker image
+        run: docker build -f Dockerfile.amazonlinux -t handbrake-al2023:latest .
+      
+      - name: Create container
+        run: docker create --name handbrake-build handbrake-al2023:latest
+      
+      - name: Copy HandBrakeCLI
         run: |
-          docker build -f Dockerfile.amazonlinux -t handbrake-al2023:latest .
-
-      - name: Run container to build HandBrakeCLI
-        run: |
-          # Run container in detached mode so we can copy files out later
-          CONTAINER_NAME=handbrake-build
-          docker rm -f $CONTAINER_NAME || true
-          docker run --name $CONTAINER_NAME -d handbrake-al2023:latest
-          # Wait for the build to finish. The entrypoint script exits when done.
-          docker wait $CONTAINER_NAME
-
-      - name: Copy HandBrakeCLI binary from container
-        run: |
-          CONTAINER_NAME=handbrake-build
           mkdir -p output
-          docker cp $CONTAINER_NAME:/usr/local/bin/HandBrakeCLI output/HandBrakeCLI || true
-          docker rm -f $CONTAINER_NAME || true
-          ls -la output || true
+          docker cp handbrake-build:/usr/local/bin/HandBrakeCLI output/HandBrakeCLI
+      
+      - name: Remove container
+        run: docker rm handbrake-build
 
       - name: Upload HandBrakeCLI artifact
         uses: actions/upload-artifact@v4
