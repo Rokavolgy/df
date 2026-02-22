@@ -102,24 +102,23 @@ ldconfig
 #Double checking it
 echo "Checking TurboJPEG"
 
-if [ -f /usr/include/turbojpeg.h ]; then
-  echo "Header OK: /usr/include/turbojpeg.h"
+if [ -f /usr/local/include/turbojpeg.h ]; then
+  echo "TurboJPEG header OK"
 else
   echo "ERROR: turbojpeg.h missing"
+  ls -la /usr/local/include || true
   exit 1
 fi
 
-if pkg-config --exists libjpeg; then
-  echo "pkg-config: libjpeg OK"
-  pkg-config --modversion libjpeg
-elif pkg-config --exists turbojpeg; then
-  echo "pkg-config: turbojpeg OK"
-  pkg-config --modversion turbojpeg
+if pkg-config --exists libturbojpeg; then
+  echo "TurboJPEG pkg-config OK"
+  pkg-config --modversion libturbojpeg
 else
-  echo "ERROR: turbojpeg pkg-config module missing"
-  ls -la /usr/lib64/pkgconfig || true
+  echo "ERROR: TurboJPEG pkg-config missing"
+  ls -la /usr/local/lib64/pkgconfig || true
   exit 1
 fi
+
 ln -sf /usr/include/turbojpeg.h /usr/local/include/turbojpeg.h
 ln -sf /usr/lib64/libturbojpeg.so /usr/local/lib/libturbojpeg.so
 ldconfig
