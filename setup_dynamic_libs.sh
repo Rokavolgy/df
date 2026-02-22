@@ -64,7 +64,7 @@ cd x264
 # Optionally checkout a stable tag. Comment out if you want latest master.
 # Example: git checkout stable
 # Use default branch for latest stable-ish code
-./configure --enable-shared --enable-pic --prefix="$PREFIX" > /dev/null
+./configure --enable-shared --enable-pic --prefix="/usr/" > /dev/null
 make -j"$NPROC" > /dev/null
 make install
 ldconfig
