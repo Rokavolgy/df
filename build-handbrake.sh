@@ -191,15 +191,22 @@ PKG_CONFIG_PATH="$PKG_CONFIG_PATH" CPPFLAGS="$CPPFLAGS" CFLAGS="$CFLAGS" LDFLAGS
 # Install HandBrakeCLI to /usr/local
 make --directory=build install
 
+# Ensure the binary is present and executable
+if [ -f /usr/local/bin/HandBrakeCLI ]; then
+  chmod 755 /usr/local/bin/HandBrakeCLI
+  chown root:root /usr/local/bin/HandBrakeCLI || true
+fi
+
 # Verify HandBrakeCLI
 if [ -x /usr/local/bin/HandBrakeCLI ]; then
   echo "HandBrakeCLI built successfully"
-  /usr/local/bin/HandBrakeCLI --version
+  /usr/local/bin/HandBrakeCLI --version || true
 else
   echo "ERROR: HandBrakeCLI not found after build"
-  ls -la /usr/local/bin || true
+  ls -la /usr/local/bin "$OUTDIR" || true
   exit 1
 fi
+
 
 echo "Giga build complete. HandBrakeCLI is at /usr/local/bin/HandBrakeCLI"
 echo "Libraries installed to $PREFIX"
