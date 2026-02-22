@@ -91,15 +91,15 @@ else
   ls -la "$PREFIX/lib/pkgconfig" || true
 fi
 
-echo "Building TurboJPEG from source"
+#echo "Building TurboJPEG from source"
 
-git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git
-cd libjpeg-turbo
+#git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git
+#cd libjpeg-turbo
 
-cmake -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr/local .
-make -j$(nproc)
-make install
-ldconfig
+#cmake -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr/local .
+#make -j$(nproc)
+#make install
+#ldconfig
 
 #Double checking it
 echo "Checking TurboJPEG"
@@ -127,17 +127,17 @@ ldconfig
 # -----------------------------------------------------------------------------
 # Build and install LAME (libmp3lame) from source
 # -----------------------------------------------------------------------------
-echo "Building LAME (libmp3lame) from source"
+#echo "Building LAME (libmp3lame) from source"
 
-cd "$WORKDIR"
-rm -rf lame-3.100 lame-3.100.tar.gz
-wget -q https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz
-tar xf lame-3.100.tar.gz
-cd lame-3.100
-./configure --enable-shared --prefix="$PREFIX"
-make -j"$NPROC" > /dev/null
-make install
-ldconfig
+#cd "$WORKDIR"
+#rm -rf lame-3.100 lame-3.100.tar.gz
+#wget -q https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz
+#tar xf lame-3.100.tar.gz
+#cd lame-3.100
+#./configure --enable-shared --prefix="$PREFIX"
+#make -j"$NPROC" > /dev/null
+#make install
+#ldconfig
 
 # Verify libmp3lame
 if pkg-config --exists libmp3lame; then
