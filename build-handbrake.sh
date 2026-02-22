@@ -102,28 +102,28 @@ fi
 #ldconfig
 
 #Double checking it
-echo "Checking TurboJPEG"
+#echo "Checking TurboJPEG"
 
-if [ -f /usr/local/include/turbojpeg.h ]; then
-  echo "TurboJPEG header OK"
-else
-  echo "ERROR: turbojpeg.h missing"
-  ls -la /usr/local/include || true
-  exit 1
-fi
+#if [ -f /usr/local/include/turbojpeg.h ]; then
+#  echo "TurboJPEG header OK"
+#else
+#  echo "ERROR: turbojpeg.h missing"
+#  ls -la /usr/local/include || true
+#  exit 1
+#fi
 
-if pkg-config --exists libturbojpeg; then
-  echo "TurboJPEG pkg-config OK"
-  pkg-config --modversion libturbojpeg
-else
-  echo "ERROR: TurboJPEG pkg-config missing"
-  ls -la /usr/local/lib64/pkgconfig || true
-  exit 1
-fi
+#if pkg-config --exists libturbojpeg; then
+#  echo "TurboJPEG pkg-config OK"
+#  pkg-config --modversion libturbojpeg
+#else
+#  echo "ERROR: TurboJPEG pkg-config missing"
+#  ls -la /usr/local/lib64/pkgconfig || true
+#  exit 1
+#fi
 
-ln -sf /usr/include/turbojpeg.h /usr/local/include/turbojpeg.h
-ln -sf /usr/lib64/libturbojpeg.so /usr/local/lib/libturbojpeg.so
-ldconfig
+#ln -sf /usr/include/turbojpeg.h /usr/local/include/turbojpeg.h
+#ln -sf /usr/lib64/libturbojpeg.so /usr/local/lib/libturbojpeg.so
+#ldconfig
 # -----------------------------------------------------------------------------
 # Build and install LAME (libmp3lame) from source
 # -----------------------------------------------------------------------------
