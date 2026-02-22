@@ -88,8 +88,8 @@ tar xf lame-3.100.tar.gz
 cd lame-3.100
 ./configure --enable-shared --prefix="$PREFIX"
 make -j"$NPROC"
-sudo make install
-sudo ldconfig
+make install
+ldconfig
 
 # Verify libmp3lame
 if pkg-config --exists libmp3lame; then
