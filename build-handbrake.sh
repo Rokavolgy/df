@@ -44,9 +44,9 @@ which nasm
 which yasm
 
 # Export pkg-config path for /usr/local
-export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
-export CPPFLAGS="-I$PREFIX/include $CPPFLAGS"
-export LDFLAGS="-L$PREFIX/lib $LDFLAGS"
+export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:/usr/lib64/pkgconfig:$PKG_CONFIG_PATH"
+export CPPFLAGS="-I/usr/include -I$PREFIX/include $CPPFLAGS" 
+export LDFLAGS="-L/usr/lib64 -L$PREFIX/lib $LDFLAGS"
 export PATH="$PREFIX/bin:$PATH"
 
 # -----------------------------------------------------------------------------
@@ -88,8 +88,30 @@ else
   echo "Listing $PREFIX/lib/pkgconfig"
   ls -la "$PREFIX/lib/pkgconfig" || true
 fi
+#Double checking it
+echo "Checking TurboJPEG"
 
+if [ -f /usr/include/turbojpeg.h ]; then
+  echo "Header OK: /usr/include/turbojpeg.h"
+else
+  echo "ERROR: turbojpeg.h missing"
+  exit 1
+fi
 
+if pkg-config --exists libjpeg; then
+  echo "pkg-config: libjpeg OK"
+  pkg-config --modversion libjpeg
+elif pkg-config --exists turbojpeg; then
+  echo "pkg-config: turbojpeg OK"
+  pkg-config --modversion turbojpeg
+else
+  echo "ERROR: turbojpeg pkg-config module missing"
+  ls -la /usr/lib64/pkgconfig || true
+  exit 1
+fi
+ln -sf /usr/include/turbojpeg.h /usr/local/include/turbojpeg.h
+ln -sf /usr/lib64/libturbojpeg.so /usr/local/lib/libturbojpeg.so
+ldconfig
 # -----------------------------------------------------------------------------
 # Build and install LAME (libmp3lame) from source
 # -----------------------------------------------------------------------------
