@@ -88,6 +88,17 @@ else
   echo "Listing $PREFIX/lib/pkgconfig"
   ls -la "$PREFIX/lib/pkgconfig" || true
 fi
+
+echo "Building TurboJPEG from source"
+
+git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git
+cd libjpeg-turbo
+
+cmake -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr/local .
+make -j$(nproc)
+make install
+ldconfig
+
 #Double checking it
 echo "Checking TurboJPEG"
 
