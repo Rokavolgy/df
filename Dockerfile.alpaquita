@@ -18,6 +18,6 @@ RUN apk add --no-cache \
     libatomic
 
 WORKDIR /work
-COPY build-handbrake.sh /work/build-handbrake.sh
-RUN chmod +x /work/build-handbrake.sh
-RUN /work/build-handbrake.sh
+COPY build-handbrake-alpaquita.sha /work/build-handbrake-alpaquita.sha
+RUN chmod +x /work/build-handbrake-alpaquita.sha
+RUN /work/build-handbrake-alpaquita.sha
