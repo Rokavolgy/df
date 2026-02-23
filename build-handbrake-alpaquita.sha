@@ -155,7 +155,7 @@ make -j$(nproc)
 make install
 
 #libnuma
-git clone https://git.kernel.org/pub/scm/utils/numactl/numactl.git
+git clone --depth 1 https://github.com/numactl/numactl.git
 cd numactl
 ./autogen.sh || true
 ./configure --prefix="$PREFIX" --enable-static --disable-shared
