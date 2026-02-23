@@ -147,8 +147,8 @@ export CPPFLAGS="-I$PREFIX/include $CPPFLAGS"
 export LDFLAGS="-L$PREFIX/lib $LDFLAGS"
 
 
-ln -sf /usr/local/include/turbojpeg.h /usr/include/turbojpeg.h || true
-ln -sf /usr/local/lib64/pkgconfig/libturbojpeg.pc /usr/lib64/pkgconfig/libturbojpeg.pc || true
+# ln -sf /usr/local/include/turbojpeg.h /usr/include/turbojpeg.h || true
+# ln -sf /usr/local/lib64/pkgconfig/libturbojpeg.pc /usr/lib64/pkgconfig/libturbojpeg.pc || true
 ldconfig || true
 # -----------------------------------------------------------------------------
 # Clone and build HandBrakeCLI (no GUI)
