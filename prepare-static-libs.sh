@@ -181,6 +181,41 @@ make -j"$NPROC"
 make install
 cd ..
 
+#libvpx
+git clone --depth 1 https://chromium.googlesource.com/webm/libvpx
+cd libvpx
+
+# configure for static-only
+./configure --prefix="$PREFIX" \
+            --enable-static --disable-shared \
+            --disable-examples --disable-unit-tests \
+            --disable-docs \
+            --disable-runtime-cpu-detect
+
+make -j"$NPROC"
+make install
+
+#libopus
+git clone --depth 1 https://github.com/xiph/opus.git
+cd opus
+
+./autogen.sh || true
+./configure --prefix="$PREFIX" \
+            --enable-static --disable-shared \
+            --with-pic
+make -j"$NPROC"
+make install
+
+#verify
+
+ls -l $PREFIX/lib/libopus.a
+pkg-config --static --libs opus
+
+
+ls -l $PREFIX/lib/libvpx.a
+pkg-config --static --libs vpx
+
+
 # Re-export pkg-config path in case files were added
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
 export CPPFLAGS="-I$PREFIX/include $CPPFLAGS"
