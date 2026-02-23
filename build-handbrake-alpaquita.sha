@@ -136,18 +136,23 @@ else
   ls -la "$PREFIX/lib/pkgconfig" || true
 fi
 
-apk add build-base meson ninja pkgconfig freetype-dev harfbuzz-dev fribidi-dev
+apk add --no-cache build-base autoconf automake libtool pkgconf freetype-dev harfbuzz-dev fribidi-dev pkgconfig git
 
-wget https://github.com/libass/libass/releases/download/0.17.1/libass-0.17.1.tar.xz
-tar xf libass-0.17.1.tar.xz
-cd libass-0.17.1
+git clone --depth 1 https://github.com/libass/libass.git
+cd libass
 
-meson setup build \
-    --default-library=static \
-    -Dtests=false
+# generate configure if needed
+./autogen.sh    # only required if building from git
 
-ninja -C build
-ninja -C build install
+# configure for static-only
+./configure --prefix=/usr/local \
+            --enable-static --disable-shared \
+            --with-freetype-prefix=/usr/local \
+            --with-harfbuzz-prefix=/usr/local \
+            --with-fribidi-prefix=/usr/local
+
+make -j$(nproc)
+make install
 
 #libnuma
 git clone https://git.kernel.org/pub/scm/utils/numactl/numactl.git
