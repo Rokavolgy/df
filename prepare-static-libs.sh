@@ -88,7 +88,7 @@ make -j"$NPROC"
 make install
 
 pkg-config --static --libs libturbojpeg || true
-ls -l $PREFIX/lib/libturbojpeg.a
+ls -l $PREFIX/lib64/libturbojpeg.a
 ls -l $PREFIX/include/turbojpeg.h
 
 #libfreetype
