@@ -1,4 +1,4 @@
-FROM bellsoft/alpaquita:3.19
+FROM bellsoft/alpaquita-linux-gcc:latest
 
 RUN apk add --no-cache \
     build-base git nasm yasm pkgconf autoconf automake libtool cmake meson ninja \
