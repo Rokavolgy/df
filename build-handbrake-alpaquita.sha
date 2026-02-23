@@ -168,7 +168,7 @@ if [ -n "$LATEST_TAG" ]; then
 fi
 
 echo "Patching tar command"
-apk install tar
+apk add tar
 
 # Override to master
 # git checkout master
