@@ -1,0 +1,55 @@
+name: Build HandBrakeCLI on Amazon Linux 2023
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Enable BuildKit
+        run: echo "DOCKER_BUILDKIT=1" >> $GITHUB_ENV
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Restore buildx cache
+        uses: actions/cache@v4
+        with:
+          path: .buildx-cache
+          key: buildx-cache-${{ runner.os }}-${{ hashFiles('Dockerfile.alpaquita','build-handbrake-alpaquita.sh') }}
+          restore-keys: buildx-cache-${{ runner.os }}-
+      
+      - name: Build Docker image with local buildx cache and load image
+        run: |
+          mkdir -p .buildx-cache
+          docker buildx build \
+            --progress=plain \
+            --tag handbrake-al2023:latest \
+            --cache-from=type=local,src=.buildx-cache \
+            --cache-to=type=local,dest=.buildx-cache,mode=max \
+            --load \
+            -f Dockerfile.alpaquita .
+
+      - name: Create container
+        run: docker create --name handbrake-build handbrake-al2023:latest
+      
+      - name: Copy HandBrakeCLI
+        run: |
+          mkdir -p output
+          docker cp handbrake-build:/usr/local/bin/HandBrakeCLI output/HandBrakeCLI
+      
+      - name: Remove container
+        run: docker rm handbrake-build
+
+      - name: Upload HandBrakeCLI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HandBrakeCLI
+          path: output/HandBrakeCLI
