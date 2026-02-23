@@ -14,6 +14,9 @@ echo "Workdir: $WORKDIR"
 echo "Install prefix: $PREFIX"
 echo "Parallel jobs: $NPROC"
 
+export PKG_CONFIG="pkg-config --static" 
+export HB_BUILD_STATIC=1
+
 # Ensure workdir exists
 mkdir -p "$WORKDIR"
 chown "$(id -u):$(id -g)" "$WORKDIR"
@@ -64,7 +67,7 @@ cd x264
 # Optionally checkout a stable tag. Comment out if you want latest master.
 # Example: git checkout stable
 # Use default branch for latest stable-ish code
-./configure --enable-shared --enable-pic --prefix="$PREFIX" > /dev/null
+./configure --enable-static --disable-shared --enable-pic --prefix="$PREFIX" > /dev/null
 make -j"$NPROC" > /dev/null
 make install
 ldconfig
@@ -91,53 +94,53 @@ else
   ls -la "$PREFIX/lib/pkgconfig" || true
 fi
 
-#echo "Building TurboJPEG from source"
+echo "Building TurboJPEG from source"
 
-#git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git
-#cd libjpeg-turbo
+git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git
+cd libjpeg-turbo
 
-#cmake -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr/local .
-#make -j$(nproc)
-#make install
-#ldconfig
+cmake -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr/local .
+make -j$(nproc)
+make install
+ldconfig
 
 #Double checking it
-#echo "Checking TurboJPEG"
+echo "Checking TurboJPEG"
 
-#if [ -f /usr/local/include/turbojpeg.h ]; then
-#  echo "TurboJPEG header OK"
-#else
-#  echo "ERROR: turbojpeg.h missing"
-#  ls -la /usr/local/include || true
-#  exit 1
-#fi
+if [ -f /usr/local/include/turbojpeg.h ]; then
+  echo "TurboJPEG header OK"
+else
+  echo "ERROR: turbojpeg.h missing"
+  ls -la /usr/local/include || true
+  exit 1
+fi
 
-#if pkg-config --exists libturbojpeg; then
-#  echo "TurboJPEG pkg-config OK"
-#  pkg-config --modversion libturbojpeg
-#else
-#  echo "ERROR: TurboJPEG pkg-config missing"
-#  ls -la /usr/local/lib64/pkgconfig || true
-#  exit 1
-#fi
+if pkg-config --exists libturbojpeg; then
+  echo "TurboJPEG pkg-config OK"
+  pkg-config --modversion libturbojpeg
+else
+  echo "ERROR: TurboJPEG pkg-config missing"
+  ls -la /usr/local/lib64/pkgconfig || true
+  exit 1
+fi
 
-#ln -sf /usr/include/turbojpeg.h /usr/local/include/turbojpeg.h
-#ln -sf /usr/lib64/libturbojpeg.so /usr/local/lib/libturbojpeg.so
-#ldconfig
+ln -sf /usr/include/turbojpeg.h /usr/local/include/turbojpeg.h
+ln -sf /usr/lib64/libturbojpeg.so /usr/local/lib/libturbojpeg.so
+ldconfig
 # -----------------------------------------------------------------------------
 # Build and install LAME (libmp3lame) from source
 # -----------------------------------------------------------------------------
-#echo "Building LAME (libmp3lame) from source"
+echo "Building LAME (libmp3lame) from source"
 
-#cd "$WORKDIR"
-#rm -rf lame-3.100 lame-3.100.tar.gz
-#wget -q https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz
-#tar xf lame-3.100.tar.gz
-#cd lame-3.100
-#./configure --enable-shared --prefix="$PREFIX"
-#make -j"$NPROC" > /dev/null
-#make install
-#ldconfig
+cd "$WORKDIR"
+rm -rf lame-3.100 lame-3.100.tar.gz
+wget -q https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz
+tar xf lame-3.100.tar.gz
+cd lame-3.100
+./configure --enable-static --disable-shared --prefix="$PREFIX"
+make -j"$NPROC" > /dev/null
+make install
+ldconfig
 
 # Verify libmp3lame
 if pkg-config --exists libmp3lame; then
