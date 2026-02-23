@@ -1,8 +1,6 @@
 FROM bellsoft/alpaquita-linux-gcc:latest
 
-
-RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
-RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
+RUN apk add x265-dev libvpx-dev libass-dev lame-dev --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community
 
 RUN apk update
 
