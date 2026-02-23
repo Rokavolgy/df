@@ -15,7 +15,7 @@ RUN apk add --no-cache \
     python3 python3-dev zlib-dev bzip2-dev xz-dev libogg-dev libvorbis-dev \
     libtheora-dev libvpx-dev x265-dev jansson-dev libass-dev lame-dev \
     libjpeg-turbo-dev libsndfile-dev fribidi-dev harfbuzz-dev freetype-dev \
-    libatomic
+    libatomic speexdsp-dev speex-dev
 
 WORKDIR /work
 COPY build-handbrake-alpaquita.sha /work/build-handbrake-alpaquita.sha
