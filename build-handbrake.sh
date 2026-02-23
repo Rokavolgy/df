@@ -170,6 +170,10 @@ ldconfig || true
 # -----------------------------------------------------------------------------
 # Clone and build HandBrakeCLI (no GUI)
 # -----------------------------------------------------------------------------
+
+echo "Patching tar command"
+apk install tar
+
 echo "Cloning HandBrake and building HandBrakeCLI"
 
 cd "$WORKDIR"
