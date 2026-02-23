@@ -23,8 +23,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .buildx-cache
-          key: buildx-cache-${{ runner.os }}-${{ hashFiles('Dockerfile.alpaquita','build-handbrake-alpaquita.sh') }}
-          restore-keys: buildx-cache-${{ runner.os }}-
+          key: buildxB-cache-${{ runner.os }}-${{ hashFiles('Dockerfile.alpaquita','build-handbrake-alpaquita.sh') }}
+          restore-keys: buildxB-cache-${{ runner.os }}-
       
       - name: Build Docker image with local buildx cache and load image
         run: |
