@@ -35,7 +35,7 @@ which yasm
 export PREFIX=/usr/local
 export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
 export CPPFLAGS="-I$PREFIX/include -I/usr/include $CPPFLAGS"
-export CFLAGS="-I$PREFIX/include -I/usr/include $CFLAGS"
+export CFLAGS="-I$PREFIX/include -I/usr/include -fPIC $CFLAGS"
 export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
 export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
 
@@ -136,16 +136,56 @@ else
   ls -la "$PREFIX/lib/pkgconfig" || true
 fi
 
+apk add build-base meson ninja pkgconfig freetype-dev harfbuzz-dev fribidi-dev
+
+wget https://github.com/libass/libass/releases/download/0.17.1/libass-0.17.1.tar.xz
+tar xf libass-0.17.1.tar.xz
+cd libass-0.17.1
+
+meson setup build \
+    --default-library=static \
+    -Dtests=false
+
+ninja -C build
+ninja -C build install
+
+#libnuma
+git clone https://git.kernel.org/pub/scm/utils/numactl/numactl.git
+cd numactl
+./autogen.sh || true
+./configure --prefix="$PREFIX" --enable-static --disable-shared
+make -j"$NPROC"
+make install
+
 # -----------------------------------------------------------------------------
 # Build and install speexdsp and speex from source if pkg-config can't find them
 # -----------------------------------------------------------------------------
 echo "Checking speex and speexdsp"
+# libspeex
+git clone --depth 1 https://github.com/xiph/speex.git speex
+cd speex
+./autogen.sh || true
+./configure --prefix="$PREFIX" --enable-static --disable-shared --with-pic
+make -j"$NPROC"
+make install
+cd ..
+
+# speexdsp (if separate)
+git clone --depth 1 https://github.com/xiph/speexdsp.git speexdsp
+cd speexdsp
+./autogen.sh || true
+./configure --prefix="$PREFIX" --enable-static --disable-shared --with-pic
+make -j"$NPROC"
+make install
+cd ..
 
 # Re-export pkg-config path in case files were added
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
 export CPPFLAGS="-I$PREFIX/include $CPPFLAGS"
 export LDFLAGS="-L$PREFIX/lib $LDFLAGS"
 
+pkg-config --static --libs speex 
+ls -l $PREFIX/lib/libspeex.a
 
 # ln -sf /usr/local/include/turbojpeg.h /usr/include/turbojpeg.h || true
 # ln -sf /usr/local/lib64/pkgconfig/libturbojpeg.pc /usr/lib64/pkgconfig/libturbojpeg.pc || true
@@ -153,6 +193,21 @@ ldconfig || true
 # -----------------------------------------------------------------------------
 # Clone and build HandBrakeCLI (no GUI)
 # -----------------------------------------------------------------------------
+# Found packages
+echo "Listing packages."
+echo "method1"
+pkg-config --list-all | awk '{print $1}' | while read -r pkg; do
+  if pkg-config --static --libs "$pkg" >/dev/null 2>&1; then
+    echo "$pkg"
+  fi
+done
+echo "method2"
+for pc in $(pkg-config --variable pc_path pkg-config 2>/dev/null | tr ':' '\n' | sed -n '1,100p' | xargs -I{} find {} -name '*.pc' 2>/dev/null); do
+  if grep -qE 'Libs.private|\.a' "$pc"; then
+    basename "$pc" .pc
+  fi
+done | sort -u
+
 echo "Cloning HandBrake and building HandBrakeCLI"
 
 cd "$WORKDIR"
@@ -172,6 +227,9 @@ apk add tar
 
 # Override to master
 # git checkout master
+
+export PKG_CONFIG="pkg-config --static" 
+export HB_BUILD_STATIC=1
 
 # Configure and build CLI only. We built system x264 and libmp3lame, but also allow HandBrake to build bundled codecs if needed.
 # --disable-gtk ensures no GUI dependencies are required.
@@ -195,7 +253,12 @@ else
   ls -la /usr/local/bin "$OUTDIR" || true
   exit 1
 fi
+# Checking which dynamic libraries are still required.
+file $PREFIX/bin/HandBrakeCLI
+ldd $PREFIX/bin/HandBrakeCLI || echo "static or not a dynamic executable"
+readelf -d $PREFIX/bin/HandBrakeCLI | grep NEEDED || true
 
+ldd $PREFIX/bin/HandBrakeCLI 
 
 echo "Giga build complete. HandBrakeCLI is at /usr/local/bin/HandBrakeCLI"
 echo "Libraries installed to $PREFIX"
