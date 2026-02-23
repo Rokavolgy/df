@@ -76,35 +76,29 @@ else
   ls -la "$PREFIX/lib/pkgconfig" || true
 fi
 
-#echo "Building TurboJPEG from source"
+#libjpeg
+echo "Building libjpeg"
+git clone --depth 1 https://github.com/libjpeg-turbo/libjpeg-turbo.git
+cd libjpeg-turbo
+cmake -G"Unix Makefiles" \
+  -DCMAKE_INSTALL_PREFIX="$PREFIX" \
+  -DENABLE_SHARED=OFF -DENABLE_STATIC=ON \
+  -DWITH_JPEG8=ON .
+make -j"$NPROC"
+make install
 
-#git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git
-#cd libjpeg-turbo
+pkg-config --static --libs libturbojpeg || true
+ls -l $PREFIX/lib/libturbojpeg.a
+ls -l $PREFIX/include/turbojpeg.h
 
-#cmake -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr/local .
-#make -j$(nproc)
-#make install
-#ldconfig
+#libfreetype
+git clone --depth 1 https://git.savannah.gnu.org/git/freetype/freetype2.git
+cd freetype2
+./autogen.sh || true
+./configure --prefix="$PREFIX" --enable-static --disable-shared --with-pic
+make -j"$NPROC"
+make install
 
-#Double checking it
-#echo "Checking TurboJPEG"
-
-#if [ -f /usr/local/include/turbojpeg.h ]; then
-#  echo "TurboJPEG header OK"
-#else
-#  echo "ERROR: turbojpeg.h missing"
-#  ls -la /usr/local/include || true
-#  exit 1
-#fi
-
-#if pkg-config --exists libturbojpeg; then
-#  echo "TurboJPEG pkg-config OK"
-#  pkg-config --modversion libturbojpeg
-#else
-#  echo "ERROR: TurboJPEG pkg-config missing"
-#  ls -la /usr/local/lib64/pkgconfig || true
-#  exit 1
-#fi
 
 ln -sf /usr/include/turbojpeg.h /usr/local/include/turbojpeg.h
 ln -sf /usr/lib64/libturbojpeg.so /usr/local/lib/libturbojpeg.so
@@ -205,7 +199,6 @@ cd opus
             --with-pic
 make -j"$NPROC"
 make install
-
 #verify
 
 ls -l $PREFIX/lib/libopus.a
@@ -214,6 +207,32 @@ pkg-config --static --libs opus
 
 ls -l $PREFIX/lib/libvpx.a
 pkg-config --static --libs vpx
+
+# libogg
+git clone --depth 1 https://github.com/xiph/ogg.git
+cd ogg
+./autogen.sh
+./configure --prefix="$PREFIX" --enable-static --disable-shared
+make -j"$NPROC"
+make install
+cd ..
+
+# libvorbis
+git clone --depth 1 https://github.com/xiph/vorbis.git
+cd vorbis
+./autogen.sh
+./configure --prefix="$PREFIX" --enable-static --disable-shared
+make -j"$NPROC"
+make install
+
+# libjansson
+git clone --depth 1 https://github.com/akheron/jansson.git
+cd jansson
+cmake -DCMAKE_INSTALL_PREFIX="$PREFIX" -DBUILD_SHARED_LIBS=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON .
+make -j"$NPROC"
+make install
+
+
 
 
 # Re-export pkg-config path in case files were added
