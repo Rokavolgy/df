@@ -12,6 +12,8 @@ dnf install -y spal-release
 
 It is also possible to run inside after the build in the container. The script installs x264 to /usr/ , it seems /usr/local/ doesn't seem to work if LD_LIBRARY_PATH=/usr/local/lib64:/usr/local/lib:$LD_LIBRARY_PATH is not specified.
 
+For Alpaquita Linux only fontconfig and graphite2 is required, installable from apk.
+
 ## Requirements
 
 - Docker (for containerized builds)
