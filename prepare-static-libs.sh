@@ -35,7 +35,7 @@ which yasm
 export PREFIX=/usr/local
 export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
 export CPPFLAGS="-I$PREFIX/include -I/usr/include $CPPFLAGS"
-export CFLAGS="-I$PREFIX/include -I/usr/include -fPIC -march=avx2 $CFLAGS"
+export CFLAGS="-I$PREFIX/include -I/usr/include -fPIC -O3 -march=avx2 $CFLAGS"
 export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
 export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
 
@@ -49,7 +49,7 @@ cd x264
 # Optionally checkout a stable tag. Comment out if you want latest master.
 # Example: git checkout stable
 # Use default branch for latest stable-ish code
-./configure --enable-static --disable-shared --enable-pic --prefix="$PREFIX" > /dev/null
+./configure --enable-static --disable-shared --enable-pic --prefix="$PREFIX"
 make -j"$NPROC"
 make install
 ldconfig
