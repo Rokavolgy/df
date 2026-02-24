@@ -235,7 +235,7 @@ make install
 #libfribidi
 git clone --depth 1 https://github.com/fribidi/fribidi.git
 cd fribidi
-meson setup build -Ddefault_library=static -Dbuildtype=release -Dprefix="$PREFIX"
+meson setup build -Ddefault_library=static -Dbuildtype=release -Dprefix="$PREFIX" -Ddocs=false
 meson compile -C build
 meson install -C build
 cd ..
