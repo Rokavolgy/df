@@ -237,7 +237,7 @@ export CFLAGS="-std=gnu11 $CFLAGS"
 #libfribidi ignore failure for now
 git clone --depth 1 https://github.com/fribidi/fribidi.git
 cd fribidi
-meson setup build -Ddefault_library=static -Dbuildtype=release -Dprefix="$PREFIX" -Ddocs=false -Dtests=false || true
+meson setup build -Ddefault_library=static -Dbuildtype=release -Dprefix="$PREFIX" -Ddocs=false -Dtests=false -Dbin=false || true
 meson compile -C build || true
 meson install -C build || true
 cd .. || true
