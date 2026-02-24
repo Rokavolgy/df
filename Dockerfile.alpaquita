@@ -1,4 +1,4 @@
-FROM bellsoft/alpaquita-linux-gcc:latest
+FROM bellsoft/alpaquita-linux-gcc:glibc
 
 
 RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories 
