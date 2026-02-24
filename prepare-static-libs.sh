@@ -257,13 +257,15 @@ cmake -DCMAKE_INSTALL_PREFIX="$PREFIX" -DBUILD_SHARED_LIBS=OFF ..
 make -j"$NPROC" && make install
 cd ../..
 
+
+#skip for now
 #fontconfig
-git clone --depth 1 https://gitlab.freedesktop.org/fontconfig/fontconfig.git
-cd fontconfig
-./autogen.sh || true
-./configure --prefix="$PREFIX" --enable-static --disable-shared --with-add-fonts=/usr/share/fonts
-make -j"$NPROC" && make install
-cd ..
+#git clone --depth 1 https://gitlab.freedesktop.org/fontconfig/fontconfig.git
+#cd fontconfig
+#./autogen.sh || true
+#./configure --prefix="$PREFIX" --enable-static --disable-shared --with-add-fonts=/usr/share/fonts || true
+#make -j"$NPROC" && make install || true
+#cd ..
 
 #harfbuzz
 git clone --depth 1 https://github.com/harfbuzz/harfbuzz.git
