@@ -3,7 +3,7 @@ FROM bellsoft/alpaquita-linux-gcc:glibc
 RUN apk add --no-cache \
     build-base git nasm yasm pkgconf autoconf automake libtool cmake meson ninja \
     python3 python3-dev zlib-dev bzip2-dev xz-dev \
-    libtheora-dev libvpx-dev  \
+    libtheora-dev   \
     libsndfile-dev fribidi-dev harfbuzz-dev \
     libatomic libturbojpeg libjpeg-turbo-dev gperf
 RUN apk add tar
