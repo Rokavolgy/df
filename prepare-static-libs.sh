@@ -232,6 +232,8 @@ cmake -DCMAKE_INSTALL_PREFIX="$PREFIX" -DBUILD_SHARED_LIBS=OFF -DCMAKE_POSITION_
 make -j"$NPROC"
 make install
 
+#apply potential fix
+export CFLAGS="-std=gnu11 $CFLAGS"
 #libfribidi ignore failure for now
 git clone --depth 1 https://github.com/fribidi/fribidi.git
 cd fribidi
@@ -239,6 +241,13 @@ meson setup build -Ddefault_library=static -Dbuildtype=release -Dprefix="$PREFIX
 meson compile -C build || true
 meson install -C build || true
 cd .. || true
+
+export PREFIX=/usr/local
+export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
+export CPPFLAGS="-I$PREFIX/include -I/usr/include $CPPFLAGS"
+export CFLAGS="-I$PREFIX/include -I/usr/include -fPIC $CFLAGS"
+export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
+export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
 
 #graphite2
 git clone --depth 1 https://github.com/silnrsi/graphite2.git
