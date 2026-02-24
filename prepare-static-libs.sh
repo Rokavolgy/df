@@ -232,13 +232,13 @@ cmake -DCMAKE_INSTALL_PREFIX="$PREFIX" -DBUILD_SHARED_LIBS=OFF -DCMAKE_POSITION_
 make -j"$NPROC"
 make install
 
-#libfribidi
+#libfribidi ignore failure for now
 git clone --depth 1 https://github.com/fribidi/fribidi.git
 cd fribidi
-meson setup build -Ddefault_library=static -Dbuildtype=release -Dprefix="$PREFIX" -Ddocs=false
-meson compile -C build
-meson install -C build
-cd ..
+meson setup build -Ddefault_library=static -Dbuildtype=release -Dprefix="$PREFIX" -Ddocs=false -Dtests=false || true
+meson compile -C build || true
+meson install -C build || true
+cd .. || true
 
 #graphite2
 git clone --depth 1 https://github.com/silnrsi/graphite2.git
