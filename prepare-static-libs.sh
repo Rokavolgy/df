@@ -232,6 +232,63 @@ cmake -DCMAKE_INSTALL_PREFIX="$PREFIX" -DBUILD_SHARED_LIBS=OFF -DCMAKE_POSITION_
 make -j"$NPROC"
 make install
 
+#libfribidi
+git clone --depth 1 https://github.com/fribidi/fribidi.git
+cd fribidi
+meson setup build -Ddefault_library=static -Dbuildtype=release -Dprefix="$PREFIX"
+meson compile -C build
+meson install -C build
+cd ..
+
+#graphite2
+git clone --depth 1 https://github.com/silnrsi/graphite2.git
+cd graphite2
+mkdir build && cd build
+cmake -DCMAKE_INSTALL_PREFIX="$PREFIX" -DBUILD_SHARED_LIBS=OFF ..
+make -j"$NPROC" && make install
+cd ../..
+
+#fontconfig
+git clone --depth 1 https://gitlab.freedesktop.org/fontconfig/fontconfig.git
+cd fontconfig
+./autogen.sh || true
+./configure --prefix="$PREFIX" --enable-static --disable-shared --with-add-fonts=/usr/share/fonts
+make -j"$NPROC" && make install
+cd ..
+
+#harfbuzz
+git clone --depth 1 https://github.com/harfbuzz/harfbuzz.git
+cd harfbuzz
+meson setup build -Ddefault_library=static -Dglib=disabled -Dgraphite=enabled -Dintrospection=disabled -Dtests=false -Dprefix="$PREFIX"
+meson compile -C build
+meson install -C build
+cd ..
+
+#this will probably fail
+git clone --depth 1 https://gitlab.gnome.org/GNOME/glib.git
+cd glib
+meson setup build \
+  -Ddefault_library=static \
+  -Dinternal_pcre=false \
+  -Dlibmount=false \
+  -Dselinux=false \
+  -Dman=false \
+  -Dinstalled_tests=false \
+  -Dtests=false \
+  -Diconv=external \
+  -Dprefix="$PREFIX"
+meson compile -C build
+meson install -C build
+
+#libtheora
+git clone --depth 1 https://github.com/xiph/theora.git
+cd theora
+./autogen.sh
+./configure --prefix="$PREFIX" --enable-static --disable-shared
+make -j"$NPROC" && make install
+cd ..
+
+
 
 
 
