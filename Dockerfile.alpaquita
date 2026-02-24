@@ -12,10 +12,10 @@ RUN apk add x265-dev --repository=https://dl-cdn.alpinelinux.org/alpine/edge/mai
 
 RUN apk add --no-cache \
     build-base git nasm yasm pkgconf autoconf automake libtool cmake meson ninja \
-    python3 python3-dev zlib-dev bzip2-dev xz-dev libogg-dev libvorbis-dev \
-    libtheora-dev libvpx-dev x265-dev jansson-dev \
-    libsndfile-dev fribidi-dev harfbuzz-dev freetype-dev \
-    libatomic libturbojpeg libjpeg-turbo-dev
+    python3 python3-dev zlib-dev bzip2-dev xz-dev \
+    libtheora-dev libvpx-dev  \
+    libsndfile-dev fribidi-dev harfbuzz-dev \
+    libatomic libturbojpeg libjpeg-turbo-dev gperf
 
 WORKDIR /work
 COPY prepare-static-libs.sh /work/prepare-static-libs.sh
