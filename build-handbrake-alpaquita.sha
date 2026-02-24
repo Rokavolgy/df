@@ -2,14 +2,14 @@
 set -ex
 
 # build-handbrake-giga.sh
-# Builds x264, LAME, speexdsp/speex (if needed), then HandBrakeCLI on Alpaquita
-# No GUI. Installs libraries to /usr/local and HandBrakeCLI to /usr/local/bin.
+# Builds HandBrakeCLI on Alpaquita
+# No GUI. Installs HandBrakeCLI to /usr/local/bin.
 
 WORKDIR=/work
 PREFIX=/usr/local
 NPROC=$(nproc)
 
-echo "Starting giga build: x264, lame, speexdsp, handbrakecli"
+echo "Starting build: handbrakecli"
 echo "Workdir: $WORKDIR"
 echo "Install prefix: $PREFIX"
 echo "Parallel jobs: $NPROC"
@@ -38,10 +38,6 @@ export CPPFLAGS="-I$PREFIX/include -I/usr/include $CPPFLAGS"
 export CFLAGS="-I$PREFIX/include -I/usr/include -fPIC $CFLAGS"
 export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
 export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
-
-# -----------------------------------------------------------------------------
-# Build and install x264 from source
-# -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
 # Clone and build HandBrakeCLI (no GUI)
@@ -86,7 +82,7 @@ export HB_BUILD_STATIC=1
 
 # Configure and build CLI only. We built system x264 and libmp3lame, but also allow HandBrake to build bundled codecs if needed.
 # --disable-gtk ensures no GUI dependencies are required.
-PKG_CONFIG_PATH="$PKG_CONFIG_PATH" CPPFLAGS="$CPPFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" ./configure --disable-gtk --disable-nvenc --disable-qsv -launch-jobs=$(nproc) --force CFLAGS="-I/usr/include/turbojpeg -I/usr/local/include" --no-harden --optimize none --launch
+PKG_CONFIG_PATH="$PKG_CONFIG_PATH" CPPFLAGS="$CPPFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" ./configure --disable-gtk --disable-nvenc --disable-qsv -launch-jobs=$(nproc) --force CFLAGS="-I/usr/include/turbojpeg -I/usr/local/include" --launch
 
 # Install HandBrakeCLI to /usr/local
 make --directory=build install
