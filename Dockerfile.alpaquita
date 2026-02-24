@@ -1,5 +1,12 @@
 FROM bellsoft/alpaquita-linux-gcc:glibc
 
+RUN apk add --no-cache \
+    build-base git nasm yasm pkgconf autoconf automake libtool cmake meson ninja \
+    python3 python3-dev zlib-dev bzip2-dev xz-dev \
+    libtheora-dev libvpx-dev  \
+    libsndfile-dev fribidi-dev harfbuzz-dev \
+    libatomic libturbojpeg libjpeg-turbo-dev gperf
+RUN apk add tar
 
 RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories 
 RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
@@ -7,15 +14,9 @@ RUN wget https://dl-cdn.alpinelinux.org/alpine/v3.19/main/x86_64/alpine-keys-2.4
 RUN apk add --allow-untrusted alpine-keys-2.4-r1.apk
 RUN apk update
 
-
 RUN apk add x265-dev --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main
 
-RUN apk add --no-cache \
-    build-base git nasm yasm pkgconf autoconf automake libtool cmake meson ninja \
-    python3 python3-dev zlib-dev bzip2-dev xz-dev \
-    libtheora-dev libvpx-dev  \
-    libsndfile-dev fribidi-dev harfbuzz-dev \
-    libatomic libturbojpeg libjpeg-turbo-dev gperf
+
 
 WORKDIR /work
 COPY prepare-static-libs.sh /work/prepare-static-libs.sh
