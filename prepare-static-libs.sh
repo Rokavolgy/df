@@ -250,8 +250,8 @@ export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
 export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
 
 #graphite2
-git clone --depth 1 https://github.com/silnrsi/graphite2.git
-cd graphite2
+git clone --depth 1 https://github.com/silnrsi/graphite.git
+cd graphite
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX="$PREFIX" -DBUILD_SHARED_LIBS=OFF ..
 make -j"$NPROC" && make install
