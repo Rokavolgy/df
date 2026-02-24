@@ -270,7 +270,7 @@ cd ../..
 #harfbuzz
 git clone --depth 1 https://github.com/harfbuzz/harfbuzz.git
 cd harfbuzz
-meson setup build -Ddefault_library=static -Dglib=disabled -Dgraphite=enabled -Dintrospection=disabled -Dtests=false -Dprefix="$PREFIX"
+meson setup build -Ddefault_library=static -Dglib=disabled -Dgraphite=enabled -Dintrospection=disabled -Dtests=disabled -Dprefix="$PREFIX"
 meson compile -C build
 meson install -C build
 cd ..
@@ -287,9 +287,9 @@ meson setup build \
   -Dinstalled_tests=false \
   -Dtests=false \
   -Diconv=external \
-  -Dprefix="$PREFIX"
-meson compile -C build
-meson install -C build
+  -Dprefix="$PREFIX" || true
+meson compile -C build || true
+meson install -C build || true
 
 #libtheora
 git clone --depth 1 https://github.com/xiph/theora.git
