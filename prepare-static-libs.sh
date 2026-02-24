@@ -232,15 +232,15 @@ cmake -DCMAKE_INSTALL_PREFIX="$PREFIX" -DBUILD_SHARED_LIBS=OFF -DCMAKE_POSITION_
 make -j"$NPROC"
 make install
 
-#apply potential fix
+#fix for fribidi
 export CFLAGS="-std=gnu11 $CFLAGS"
-#libfribidi ignore failure for now
+#libfribidi 
 git clone --depth 1 https://github.com/fribidi/fribidi.git
 cd fribidi
 meson setup build -Ddefault_library=static -Dbuildtype=release -Dprefix="$PREFIX" -Ddocs=false -Dtests=false -Dbin=false || true
-meson compile -C build || true
-meson install -C build || true
-cd .. || true
+meson compile -C build
+meson install -C build
+cd ..
 
 export PREFIX=/usr/local
 export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
