@@ -39,6 +39,32 @@ export CFLAGS="-I$PREFIX/include -I/usr/include -fPIC -O3 -mavx2 $CFLAGS"
 export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
 export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
 
+echo "Preparing GLIBC"
+
+
+wget https://ftp.gnu.org/gnu/libc/glibc-2.31.tar.gz
+tar -xvf glibc-2.31.tar.gz
+cd glibc-2.31
+mkdir build && cd build
+
+../configure --prefix=/opt/glibc-2.31
+make -j$(nproc)
+make install
+
+echo "older GLIBC prepared"
+
+export PREFIX=/usr/local
+export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
+export GLIBC_PREFIX=/opt/glibc-2.31
+export CPPFLAGS="-I$GLIBC_PREFIX/include -I$PREFIX/include -I/usr/include $CPPFLAGS"
+export CFLAGS="-I$GLIBC_PREFIX/include -I$PREFIX/include -fPIC -O3 -mavx2 $CFLAGS"
+export LDFLAGS="-L$GLIBC_PREFIX/lib -Wl,--rpath=$GLIBC_PREFIX/lib \
+-Wl,--dynamic-linker=$GLIBC_PREFIX/lib/ld-linux-x86-64.so.2 \
+-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
+export LD_LIBRARY_PATH="$GLIBC_PREFIX/lib:$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
+
+
+
 echo "Building x264 from source"
 
 cd "$WORKDIR"
@@ -242,13 +268,6 @@ meson compile -C build
 meson install -C build
 cd ..
 
-export PREFIX=/usr/local
-export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
-export CPPFLAGS="-I$PREFIX/include -I/usr/include $CPPFLAGS"
-export CFLAGS="-I$PREFIX/include -I/usr/include -fPIC $CFLAGS"
-export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
-export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
-
 #skip for now
 #graphite2
 #git clone --depth 1 https://github.com/silnrsi/graphite.git
@@ -307,13 +326,14 @@ make -j"$NPROC" && make install
 cd ..
 
 
-
-
-
 # Re-export pkg-config path in case files were added
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
-export CPPFLAGS="-I$PREFIX/include $CPPFLAGS"
-export LDFLAGS="-L$PREFIX/lib $LDFLAGS"
+export CPPFLAGS="-I$GLIBC_PREFIX/include -I$PREFIX/include -I/usr/include $CPPFLAGS"
+export CFLAGS="-I$GLIBC_PREFIX/include -I$PREFIX/include -fPIC -O3 -mavx2 $CFLAGS"
+export LDFLAGS="-L$GLIBC_PREFIX/lib -Wl,--rpath=$GLIBC_PREFIX/lib \
+-Wl,--dynamic-linker=$GLIBC_PREFIX/lib/ld-linux-x86-64.so.2 \
+-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
+export LD_LIBRARY_PATH="$GLIBC_PREFIX/lib:$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
 
 pkg-config --static --libs speex 
 ls -l $PREFIX/lib/libspeex.a
