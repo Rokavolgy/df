@@ -40,7 +40,7 @@ export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
 export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
 
 echo "Preparing GLIBC"
-
+apk add bison
 
 wget https://ftp.gnu.org/gnu/libc/glibc-2.31.tar.gz
 tar -xvf glibc-2.31.tar.gz
