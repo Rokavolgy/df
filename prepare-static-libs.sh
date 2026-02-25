@@ -34,7 +34,7 @@ which yasm
 # Export pkg-config path for /usr/local
 export PREFIX=/usr/local
 export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
-export CFLAGS="-std=gnu11 $CFLAGS"
+export CFLAGS="-std=gnu11 -O3 $CFLAGS"
 
 
 echo "Preparing GLIBC"
@@ -45,7 +45,7 @@ tar -xvf glibc-2.31.tar.gz
 cd glibc-2.31
 mkdir build && cd build
 
-../configure --prefix=/opt/glibc-2.31
+../configure --prefix=/opt/glibc-2.31 --disable-werror
 make -j$(nproc)
 make install
 
