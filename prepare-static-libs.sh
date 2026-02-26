@@ -44,11 +44,11 @@ wget https://ftp.gnu.org/gnu/libc/glibc-2.31.tar.gz
 tar -xvf glibc-2.31.tar.gz
 cd glibc-2.31
 mkdir build && cd build
-
-cat logs/make_glibc_2.31.txt
-../configure --prefix=/opt/glibc-2.31 --disable-werror >> logs/make_glibc_2.31.txt
-make -j$(nproc) -s >> logs/make_glibc_2.31.txt
-make install >> logs/make_glibc_2.31.txt
+cat /logs
+cat /logs/make_glibc_2.31.txt
+../configure --prefix=/opt/glibc-2.31 --disable-werror >> /logs/make_glibc_2.31.txt
+make -j$(nproc) -s >> /logs/make_glibc_2.31.txt
+make install >> /logs/make_glibc_2.31.txt
 
 echo "older GLIBC prepared"
 
