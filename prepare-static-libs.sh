@@ -46,7 +46,7 @@ cd glibc-2.31
 mkdir build && cd build
 
 ../configure --prefix=/opt/glibc-2.31 --disable-werror
-make -j$(nproc)
+make -j$(nproc) -s
 make install
 
 echo "older GLIBC prepared"
