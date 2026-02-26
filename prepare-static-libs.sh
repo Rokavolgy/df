@@ -45,7 +45,7 @@ tar -xvf glibc-2.31.tar.gz
 cd glibc-2.31
 mkdir build && cd build
 
-touch logs/make_glibc_2.31.txt
+cat logs/make_glibc_2.31.txt
 ../configure --prefix=/opt/glibc-2.31 --disable-werror >> logs/make_glibc_2.31.txt
 make -j$(nproc) -s >> logs/make_glibc_2.31.txt
 make install >> logs/make_glibc_2.31.txt
