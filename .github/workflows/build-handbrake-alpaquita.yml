@@ -32,6 +32,7 @@ jobs:
           docker buildx build \
             --progress=plain \
             --tag handbrake-al2023:latest \
+            --name handbrake-1
             --cache-from=type=local,src=.buildx-cache \
             --cache-to=type=local,dest=.buildx-cache,mode=max \
             --load \
@@ -55,7 +56,7 @@ jobs:
         if: always()
         run: |
           mkdir -p output
-          docker cp handbrake-build:/logs/. output/logs/
+          docker cp handbrake-1:/logs/. output/logs/
 
       - name: Upload Logs artifact
         if: always()
