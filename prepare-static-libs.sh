@@ -35,7 +35,7 @@ which yasm
 export PREFIX=/usr/local
 export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
 export CPPFLAGS="-I$PREFIX/include -I/usr/include $CPPFLAGS"
-export CFLAGS="-I$PREFIX/include -I/usr/include -fPIC -O3 -mavx2 $CFLAGS"
+export CFLAGS="-I$PREFIX/include -I/usr/include -fPIC -O3 -static -mavx2 $CFLAGS"
 export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
 export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
 
@@ -242,13 +242,6 @@ meson compile -C build
 meson install -C build
 cd ..
 
-export PREFIX=/usr/local
-export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
-export CPPFLAGS="-I$PREFIX/include -I/usr/include $CPPFLAGS"
-export CFLAGS="-I$PREFIX/include -I/usr/include -fPIC $CFLAGS"
-export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
-export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
-
 #skip for now
 #graphite2
 #git clone --depth 1 https://github.com/silnrsi/graphite.git
@@ -307,13 +300,6 @@ make -j"$NPROC" && make install
 cd ..
 
 
-
-
-
-# Re-export pkg-config path in case files were added
-export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
-export CPPFLAGS="-I$PREFIX/include $CPPFLAGS"
-export LDFLAGS="-L$PREFIX/lib $LDFLAGS"
 
 pkg-config --static --libs speex 
 ls -l $PREFIX/lib/libspeex.a
