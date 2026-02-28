@@ -44,12 +44,24 @@ jobs:
         run: |
           mkdir -p output
           docker cp handbrake-build:/usr/local/bin/HandBrakeCLI output/HandBrakeCLI
-      
-      - name: Remove container
-        run: docker rm handbrake-build
-
+          
       - name: Upload HandBrakeCLI artifact
         uses: actions/upload-artifact@v4
         with:
           name: HandBrakeCLI
           path: output/HandBrakeCLI
+
+      - name: Copy Logs
+        run: |
+          mkdir -p output
+          docker cp handbrake-build:/logs/. output/logs/
+
+      - name: Upload Logs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Logs
+          path: output/logs/
+
+      - name: Remove container
+        run: docker rm handbrake-build
+      
