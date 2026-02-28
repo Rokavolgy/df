@@ -30,9 +30,8 @@ jobs:
         run: |
           mkdir -p .buildx-cache
           docker buildx build \
-            --progress=plain \
+            --progress=auto \
             --tag handbrake-al2023:latest \
-            --name handbrake-1
             --cache-from=type=local,src=.buildx-cache \
             --cache-to=type=local,dest=.buildx-cache,mode=max \
             --load \
