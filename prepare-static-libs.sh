@@ -45,9 +45,9 @@ tar -xvf glibc-2.31.tar.gz
 cd glibc-2.31
 mkdir build && cd build
 mkdir -p /logs && touch /logs/make_glibc_2.31.txt || true
-../configure --prefix=/opt/glibc-2.31 --disable-werror >> /logs/make_glibc_2.31.txt
-make -j$(nproc) -s >> /logs/make_glibc_2.31.txt
-make install >> /logs/make_glibc_2.31.txt
+../configure --prefix=/opt/glibc-2.31 --disable-werror >> /logs/make_glibc_2.31.txt 2>&1
+make -j$(nproc) -s >> /logs/make_glibc_2.31.txt 2>&1
+make install >> /logs/make_glibc_2.31.txt 2>&1
 
 echo "older GLIBC prepared"
 
