@@ -44,8 +44,7 @@ wget https://ftp.gnu.org/gnu/libc/glibc-2.31.tar.gz
 tar -xvf glibc-2.31.tar.gz
 cd glibc-2.31
 mkdir build && cd build
-mkdir /logs
-cat /logs/make_glibc_2.31.txt
+mkdir -p /logs && touch /logs/make_glibc_2.31.txt || true
 ../configure --prefix=/opt/glibc-2.31 --disable-werror >> /logs/make_glibc_2.31.txt
 make -j$(nproc) -s >> /logs/make_glibc_2.31.txt
 make install >> /logs/make_glibc_2.31.txt
