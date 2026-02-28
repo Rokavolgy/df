@@ -40,20 +40,20 @@ export CFLAGS="-std=gnu11 -O3 $CFLAGS"
 echo "Preparing GLIBC"
 apk add bison
 
-wget https://ftp.gnu.org/gnu/libc/glibc-2.31.tar.gz
-tar -xvf glibc-2.31.tar.gz
-cd glibc-2.31
+wget https://ftp.gnu.org/gnu/libc/glibc-2.34.tar.gz
+tar -xvf glibc-2.34.tar.gz
+cd glibc-2.34
 mkdir build && cd build
-mkdir -p /logs && touch /logs/make_glibc_2.31.txt || true
-../configure --prefix=/opt/glibc-2.31 --disable-werror >> /logs/make_glibc_2.31.txt 2>&1
-make -j$(nproc) -s >> /logs/make_glibc_2.31.txt 2>&1
-make install >> /logs/make_glibc_2.31.txt 2>&1
+mkdir -p /logs && touch /logs/make_glibc_2.34.txt || true
+../configure --prefix=/opt/glibc-2.34 --disable-werror >> /logs/make_glibc_2.34.txt 2>&1
+make -j$(nproc) -s >> /logs/make_glibc_2.34.txt 2>&1
+make install >> /logs/make_glibc_2.34.txt 2>&1
 
 echo "older GLIBC prepared"
 
 export PREFIX=/usr/local
 export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
-export GLIBC_PREFIX=/opt/glibc-2.31
+export GLIBC_PREFIX=/opt/glibc-2.34
 export CPPFLAGS="-I$GLIBC_PREFIX/include -I$PREFIX/include -I/usr/include $CPPFLAGS"
 export CFLAGS="-I$GLIBC_PREFIX/include -I$PREFIX/include -fPIC -O3 -mavx2 $CFLAGS"
 export LDFLAGS="-L$GLIBC_PREFIX/lib -Wl,--rpath=$GLIBC_PREFIX/lib \
