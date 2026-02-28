@@ -34,7 +34,8 @@ which yasm
 # Export pkg-config path for /usr/local
 export PREFIX=/usr/local
 export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
-export CFLAGS="-std=gnu11 -O3 $CFLAGS"
+export CFLAGS="-std=gnu11 -fno-pie -no-pie -O3 $CFLAGS"
+export LDFLAGS="-no-pie"
 
 
 echo "Preparing GLIBC"
