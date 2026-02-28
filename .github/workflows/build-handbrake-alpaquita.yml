@@ -52,11 +52,13 @@ jobs:
           path: output/HandBrakeCLI
 
       - name: Copy Logs
+        if: always()
         run: |
           mkdir -p output
           docker cp handbrake-build:/logs/. output/logs/
 
       - name: Upload Logs artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Logs
