@@ -78,14 +78,14 @@ cd ..
 #make install
 #cd ..
 
-git clone https://gitlab.freedesktop.org/fontconfig/fontconfig.git
-cd fontconfig
-./autogen.sh || true
-./configure --prefix="$PREFIX" --enable-static --disable-shared \
-  CPPFLAGS="$CPPFLAGS" LDFLAGS="$LDFLAGS" PKG_CONFIG_PATH="$PKG_CONFIG_PATH"
-make -j$(nproc)
-make install
-cd ..
+#git clone https://gitlab.freedesktop.org/fontconfig/fontconfig.git
+#cd fontconfig
+#./autogen.sh || true
+#./configure --prefix="$PREFIX" --enable-static --disable-shared \
+#  CPPFLAGS="$CPPFLAGS" LDFLAGS="$LDFLAGS" PKG_CONFIG_PATH="$PKG_CONFIG_PATH"
+#make -j$(nproc)
+#make install
+#cd ..
 
 
 echo "Building x264 from source"
