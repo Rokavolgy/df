@@ -57,6 +57,7 @@ cd ..
 git clone https://github.com/libexpat/libexpat.git
 cd libexpat
 cd expat
+./buildconf.sh
 ./configure
 make -j$(nproc)
 make install
