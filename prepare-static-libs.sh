@@ -56,10 +56,11 @@ cd ..
 
 git clone https://github.com/libexpat/libexpat.git
 cd libexpat
-./buildconf.sh
+cd expat
 ./configure
 make -j$(nproc)
 make install
+cd ..
 cd ..
 
 git clone https://github.com/libarchive/bzip2.git
