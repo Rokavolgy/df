@@ -56,9 +56,10 @@ cd ..
 
 git clone https://github.com/libexpat/libexpat.git
 cd libexpat
-meson setup builddir -Ddefault_library=static --prefix="$PREFIX"
-ninja -C builddir
-ninja -C builddir install
+./buildconf.sh
+./configure
+make -j$(nproc)
+make install
 cd ..
 
 git clone https://github.com/libarchive/bzip2.git
