@@ -71,12 +71,12 @@ ninja -C builddir
 ninja -C builddir install
 cd ..
 
-git clone https://github.com/pnggroup/libpng.git
-cd libpng
-./configure --prefix="$PREFIX" --enable-static --disable-shared CPPFLAGS="$CPPFLAGS" LDFLAGS="$LDFLAGS"
-make -j$(nproc)
-make install
-cd ..
+#git clone https://github.com/pnggroup/libpng.git
+#cd libpng
+#./configure --prefix="$PREFIX" --enable-static --disable-shared CPPFLAGS="$CPPFLAGS" LDFLAGS="$LDFLAGS"
+#make -j$(nproc)
+#make install
+#cd ..
 
 git clone https://gitlab.freedesktop.org/fontconfig/fontconfig.git
 cd fontconfig
