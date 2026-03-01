@@ -35,8 +35,8 @@ which yasm
 export PREFIX=/usr/local
 export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
 export CPPFLAGS="-I$PREFIX/include -I/usr/include $CPPFLAGS"
-export CFLAGS="-I$PREFIX/include -I/usr/include -O3 -static -mavx2 $CFLAGS"
-export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
+export CFLAGS="-I$PREFIX/include -I/usr/include -O3  -mavx2 $CFLAGS"
+export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib -static $LDFLAGS"
 export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
 
 echo "Building x264 from source"
