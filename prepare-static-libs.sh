@@ -71,7 +71,7 @@ ninja -C builddir
 ninja -C builddir install
 cd ..
 
-git clone https://github.com/glennrp/libpng.git
+git clone https://github.com/pnggroup/libpng.git
 cd libpng
 ./configure --prefix="$PREFIX" --enable-static --disable-shared CPPFLAGS="$CPPFLAGS" LDFLAGS="$LDFLAGS"
 make -j$(nproc)
