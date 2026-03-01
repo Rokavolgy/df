@@ -38,6 +38,52 @@ export CPPFLAGS="-I$PREFIX/include -I/usr/include $CPPFLAGS"
 export CFLAGS="-I$PREFIX/include -I/usr/include -O3  -mavx2 $CFLAGS"
 export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib -static $LDFLAGS"
 export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
+echo "Bulding zlib"
+
+git clone https://github.com/madler/zlib.git 
+cd zlib
+./configure --prefix=$PREFIX --static
+make -j$(nproc)
+make install
+
+git clone https://git.savannah.gnu.org/git/freetype/freetype2.git
+cd freetype2
+./autogen.sh || true 
+./configure --prefix="$PREFIX" --enable-static --disable-shared CPPFLAGS="$CPPFLAGS" LDFLAGS="$LDFLAGS"
+make -j$(nproc)
+make install
+cd ..
+
+git clone https://github.com/libexpat/libexpat.git
+cd libexpat
+meson setup builddir -Ddefault_library=static --prefix="$PREFIX"
+ninja -C builddir
+ninja -C builddir install
+cd ..
+
+git clone https://github.com/libarchive/bzip2.git
+cd bzip2
+meson setup builddir -Ddefault_library=static -Dbuildtype=release --prefix="$PREFIX"
+ninja -C builddir
+ninja -C builddir install
+cd ..
+
+git clone https://github.com/glennrp/libpng.git
+cd libpng
+./configure --prefix="$PREFIX" --enable-static --disable-shared CPPFLAGS="$CPPFLAGS" LDFLAGS="$LDFLAGS"
+make -j$(nproc)
+make install
+cd ..
+
+git clone https://gitlab.freedesktop.org/fontconfig/fontconfig.git
+cd fontconfig
+./autogen.sh || true
+./configure --prefix="$PREFIX" --enable-static --disable-shared \
+  CPPFLAGS="$CPPFLAGS" LDFLAGS="$LDFLAGS" PKG_CONFIG_PATH="$PKG_CONFIG_PATH"
+make -j$(nproc)
+make install
+cd ..
+
 
 echo "Building x264 from source"
 
