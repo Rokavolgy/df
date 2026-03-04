@@ -3,7 +3,6 @@ FROM debian:trixie-slim AS prepare
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
-    build-essential \
     git \
     nasm yasm \
     pkg-config \
