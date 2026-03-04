@@ -50,7 +50,6 @@ jobs:
             docker buildx build \
               --progress=plain \
               --file Dockerfile.debian \
-              --builder larger_log
               --tag "$IMAGE" \
               --cache-from=type=registry,ref=ghcr.io/rokavolgy/handbrake:cache \
               --cache-to=type=registry,ref=ghcr.io/rokavolgy/handbrake:cache,mode=max \
@@ -66,7 +65,6 @@ jobs:
               --progress=plain \
               --file Dockerfile.debian2 \
               --tag "compiled" \
-              --builder larger_log
               --cache-from=type=image,ref=ghcr.io/rokavolgy/handbrake:prepare \
               --cache-from=type=registry,ref=ghcr.io/rokavolgy/handbrake:cache \
               --cache-to=type=registry,ref=ghcr.io/rokavolgy/handbrake:cache,mode=max \
