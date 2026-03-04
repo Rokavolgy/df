@@ -63,7 +63,7 @@ jobs:
       - name: Build HandBrakeCLI
         run: docker buildx build \
               --progress=plain \
-              --file Dockerfile.debian2 \
+              --file Dockerfile.debian \
               --tag "compiled" \
               --cache-from=type=image,ref=ghcr.io/rokavolgy/handbrake:prepare \
               --cache-from=type=registry,ref=ghcr.io/rokavolgy/handbrake:cache \
