@@ -36,7 +36,7 @@ jobs:
             --cache-from=type=local,src=.buildx-cache \
             --cache-to=type=local,dest=.buildx-cache,mode=max \
             --load \
-            -f Dockerfile.alpaquita .
+            -f Dockerfile.debian .
 
       - name: Create container
         run: docker create --name handbrake-build handbrake-al2023:latest
