@@ -1,4 +1,4 @@
-FROM debian:trixie-slim
+FROM debian:trixie-slim AS prepare
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -32,6 +32,8 @@ WORKDIR /work
 COPY prepare-gcc-15-minimal.sh /work/prepare-gcc-15-minimal.sh
 RUN chmod +x /work/prepare-gcc-15-minimal.sh
 RUN /work/prepare-gcc-15-minimal.sh
+
+FROM prepare AS static-libs
 
 COPY prepare-static-libs.sh /work/prepare-static-libs-debian.sh
 RUN chmod +x /work/prepare-static-libs-debian.sh
