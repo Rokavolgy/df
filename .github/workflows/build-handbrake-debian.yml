@@ -24,19 +24,48 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .buildx-cache
-          key: buildxB-cache-${{ runner.os }}-${{ hashFiles('Dockerfile.alpaquita','build-handbrake-alpaquita.sh') }}
-          restore-keys: buildxB-cache-${{ runner.os }}-
-      
-      - name: Build Docker image with local buildx cache and load image
+          key: buildxB-cache-${{ runner.os }}-${{ hashFiles('Dockerfile.debian','build-handbrake-debian.sha') }}
+          restore-keys: buildxB-cache-${{ runner.os }}
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build GCC 15 image
         run: |
-          mkdir -p .buildx-cache
-          docker buildx build \
-            --progress=plain \
-            --tag handbrake-al2023:latest \
-            --cache-from=type=local,src=.buildx-cache \
-            --cache-to=type=local,dest=.buildx-cache,mode=max \
-            --load \
-            -f Dockerfile.debian .
+          IMAGE=ghcr.io/rokavolgy/handbrake:prepare
+          if docker pull "$IMAGE"; then
+            echo "Pulled $IMAGE"
+            docker tag "$IMAGE" handbrake-al2023:prepare
+          else
+            echo "$IMAGE not found, building prepare stage and pushing to registry"
+            mkdir -p .buildx-cache
+            docker buildx build \
+              --progress=plain \
+              --file Dockerfile.debian \
+              --tag "$IMAGE" \
+              --cache-from=type=registry,ref=ghcr.io/rokavolgy/handbrake:cache \
+              --cache-to=type=registry,ref=ghcr.io/rokavolgy/handbrake:cache,mode=max \
+              --target prepare \
+              --push \
+              .
+            docker pull "$IMAGE"
+            docker tag "$IMAGE" handbrake-al2023:prepare
+          fi
+          
+      - name: Build HandBrakeCLI
+        run: docker buildx build \
+              --progress=plain \
+              --file Dockerfile.debian2 \
+              --tag "compiled" \
+              --cache-from=type=image,ref=ghcr.io/rokavolgy/handbrake:prepare \
+              --cache-from=type=registry,ref=ghcr.io/rokavolgy/handbrake:cache \
+              --cache-to=type=registry,ref=ghcr.io/rokavolgy/handbrake:cache,mode=max \
+              --push \
+              .
 
       - name: Create container
         run: docker create --name handbrake-build handbrake-al2023:latest
