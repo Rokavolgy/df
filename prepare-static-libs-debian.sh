@@ -35,7 +35,7 @@ gcc --version
 
 apt-get install libturbojpeg0-dev
 
-export PATH=/usr/local/bin:$HOME/.local/bin:$PATH
+export PATH=/opt/gcc-15/bin:$HOME/.local/bin:$PATH
 # Export pkg-config path for /usr/local
 export PREFIX=/usr/local
 export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
@@ -43,8 +43,8 @@ export CPPFLAGS="-I$PREFIX/include -I/usr/include $CPPFLAGS"
 export CFLAGS="-I$PREFIX/include -I/usr/include -O1  -mavx2 $CFLAGS"
 export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib -static -static-libgcc -static-libstdc++ $LDFLAGS"
 export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
-which gcc-15
-gcc-15 --version
+which gcc
+gcc --version
 
 echo "Bulding zlib"
 
