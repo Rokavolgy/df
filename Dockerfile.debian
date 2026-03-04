@@ -36,6 +36,7 @@ RUN /work/prepare-gcc-15-minimal.sh
 FROM prepare AS static-libs
 
 RUN apt-get install -y gettext autopoint autoconf libfontconfig-dev fontconfig
+RUN python3 -m pip install meson
 
 COPY prepare-static-libs-debian.sh /work/prepare-static-libs-debian.sh
 RUN chmod +x /work/prepare-static-libs-debian.sh
