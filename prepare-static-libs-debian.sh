@@ -62,6 +62,18 @@ make -j$(nproc)
 make install
 cd ..
 
+
+echo "Building autoconf 2.71"
+apt install build-essential m4 perl texinfo
+
+wget https://ftp.gnu.org/gnu/autoconf/autoconf-2.71.tar.gz
+tar -xf autoconf-2.71.tar.gz
+cd autoconf-2.71
+
+./configure
+make -j$(nproc)
+make install
+
 git clone https://github.com/libexpat/libexpat.git
 cd libexpat
 cd expat
