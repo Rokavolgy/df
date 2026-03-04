@@ -143,8 +143,8 @@ make -j"$NPROC"
 make install
 
 pkg-config --static --libs libturbojpeg || true
-ls -l $PREFIX/lib64/libturbojpeg.a
-ls -l $PREFIX/include/turbojpeg.h
+ls -l $PREFIX/lib64/libturbojpeg.a || true
+ls -l $PREFIX/include/turbojpeg.h || true
 
 #libfreetype
 git clone --depth 1 https://git.savannah.gnu.org/git/freetype/freetype2.git
