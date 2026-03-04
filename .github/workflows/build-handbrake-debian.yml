@@ -74,7 +74,7 @@ jobs:
               .
 
       - name: Create container
-        run: docker create --name handbrake-build handbrake:compiled
+        run: docker create --name handbrake-build ghcr.io/rokavolgy/handbrake:compiled
       
       - name: Copy HandBrakeCLI
         run: |
