@@ -65,7 +65,7 @@ jobs:
               docker buildx build \
               --progress=plain \
               --file Dockerfile.debian \
-              --tag "compiled" \
+              --tag "ghcr.io/rokavolgy/handbrake:compiled" \
               --cache-from=type=image,ref=ghcr.io/rokavolgy/handbrake:prepare \
               --cache-from=type=registry,ref=ghcr.io/rokavolgy/handbrake:cache \
               --cache-to=type=registry,ref=ghcr.io/rokavolgy/handbrake:cache,mode=max \
