@@ -39,6 +39,6 @@ COPY prepare-static-libs.sh /work/prepare-static-libs-debian.sh
 RUN chmod +x /work/prepare-static-libs-debian.sh
 RUN /work/prepare-static-libs-debian.sh
 
-COPY build-handbrake-alpaquita.sha /work/build-handbrake-debian.sha
+COPY build-handbrake-debian.sha /work/build-handbrake-debian.sha
 RUN chmod +x /work/build-handbrake-debian.sha
 RUN /work/build-handbrake-debian.sha
