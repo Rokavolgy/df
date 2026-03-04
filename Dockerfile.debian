@@ -29,6 +29,10 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /work
 
+COPY prepare-gcc-15-minimal.sh /work/prepare-gcc-15-minimal.sh
+RUN chmod +x /work/prepare-gcc-15-minimal.sh
+RUN /work/prepare-gcc-15-minimal.sh
+
 COPY prepare-static-libs.sh /work/prepare-static-libs-debian.sh
 RUN chmod +x /work/prepare-static-libs-debian.sh
 RUN /work/prepare-static-libs-debian.sh
