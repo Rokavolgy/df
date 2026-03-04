@@ -19,6 +19,10 @@ jobs:
       
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+      - name: Create a builder with larger log size
+        run: |
+            docker buildx create --use --name larger_log --driver-opt env.BUILDKIT_STEP_LOG_MAX_SIZE=50000000
       
       - name: Restore buildx cache
         uses: actions/cache@v4
@@ -46,6 +50,7 @@ jobs:
             docker buildx build \
               --progress=plain \
               --file Dockerfile.debian \
+              --builder larger_log
               --tag "$IMAGE" \
               --cache-from=type=registry,ref=ghcr.io/rokavolgy/handbrake:cache \
               --cache-to=type=registry,ref=ghcr.io/rokavolgy/handbrake:cache,mode=max \
@@ -61,6 +66,7 @@ jobs:
               --progress=plain \
               --file Dockerfile.debian2 \
               --tag "compiled" \
+              --builder larger_log
               --cache-from=type=image,ref=ghcr.io/rokavolgy/handbrake:prepare \
               --cache-from=type=registry,ref=ghcr.io/rokavolgy/handbrake:cache \
               --cache-to=type=registry,ref=ghcr.io/rokavolgy/handbrake:cache,mode=max \
