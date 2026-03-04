@@ -33,6 +33,8 @@ which yasm
 which gcc
 gcc --version
 
+apt-get install libturbojpeg0-dev
+
 export PATH=/usr/local/bin:$PATH
 # Export pkg-config path for /usr/local
 export PREFIX=/usr/local
