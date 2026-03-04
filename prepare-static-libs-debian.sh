@@ -157,8 +157,8 @@ make -j"$NPROC"
 make install
 
 
-ln -sf /usr/include/turbojpeg.h /usr/local/include/turbojpeg.h
-ln -sf /usr/lib64/libturbojpeg.so /usr/local/lib/libturbojpeg.so
+#ln -sf /usr/include/turbojpeg.h /usr/local/include/turbojpeg.h
+#ln -sf /usr/lib64/libturbojpeg.so /usr/local/lib/libturbojpeg.so
 ldconfig
 # -----------------------------------------------------------------------------
 # Build and install LAME (libmp3lame) from source
