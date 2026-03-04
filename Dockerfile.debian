@@ -25,6 +25,7 @@ RUN apt-get update && apt-get install -y \
     libx265-dev \
     ca-certificates \
     wget \
+    libtool-bin \
     tar
 
 WORKDIR /work
