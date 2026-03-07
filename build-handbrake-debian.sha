@@ -36,7 +36,7 @@ export PREFIX=/usr/local
 export PATH=/opt/gcc-15/bin:$PATH
 export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
 export CPPFLAGS="-I$PREFIX/include -I/usr/include $CPPFLAGS"
-export CFLAGS="-O3 -static-libstdc++ -static-libgcc -mavx2 $CFLAGS"
+export CFLAGS="-O3 -static-libstdc++ -static-libgcc -mavx2 -I/usr/include/turbojpeg -I/usr/local/include" $CFLAGS"
 export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
 export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
 
@@ -82,7 +82,7 @@ export HB_BUILD_STATIC=1
 
 # Configure and build CLI only. We built system x264 and libmp3lame, but also allow HandBrake to build bundled codecs if needed.
 # --disable-gtk ensures no GUI dependencies are required.
-PKG_CONFIG_PATH="$PKG_CONFIG_PATH" CPPFLAGS="$CPPFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" ./configure --disable-gtk --disable-nvenc --disable-qsv -launch-jobs=$(nproc) --force CFLAGS="-I/usr/include/turbojpeg -I/usr/local/include" --launch
+PKG_CONFIG_PATH="$PKG_CONFIG_PATH" CPPFLAGS="$CPPFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" ./configure --disable-gtk --disable-nvenc --disable-qsv -launch-jobs=$(nproc) --force --no-harden --lto on --launch
 
 # Install HandBrakeCLI to /usr/local
 make --directory=build install
