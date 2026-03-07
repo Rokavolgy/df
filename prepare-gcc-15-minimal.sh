@@ -20,7 +20,7 @@ export LDFLAGS="-fuse-ld=lld"
 mkdir build
 cd build
 
-../configure \
+LDFLAGS="-fuse-ld=lld" ../configure \
   --enable-languages=c,c++ \
   --disable-multilib \
   --prefix=/opt/gcc-15
