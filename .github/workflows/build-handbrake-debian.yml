@@ -51,10 +51,10 @@ jobs:
 
       - name: Build GCC 15 image
         run: |
-          IMAGE=ghcr.io/rokavolgy/handbrake:prepare
+          IMAGE=ghcr.io/rokavolgy/handbrake:gcc15-slim-fit
           if docker pull "$IMAGE"; then
             echo "Pulled $IMAGE"
-            docker tag "$IMAGE" handbrake-al2023:prepare
+            docker tag "$IMAGE" handbrake-al2023:gcc15-slim-fit
           else
             echo "$IMAGE not found, building prepare stage and pushing to registry"
             mkdir -p .buildx-cache
@@ -68,7 +68,7 @@ jobs:
               --push \
               .
             docker pull "$IMAGE"
-            docker tag "$IMAGE" handbrake-al2023:prepare
+            docker tag "$IMAGE" handbrake-al2023:gcc15-slim-fit
           fi
           
       - name: Build HandBrakeCLI
