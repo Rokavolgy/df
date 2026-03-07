@@ -68,11 +68,11 @@ git clone https://github.com/HandBrake/HandBrake.git
 cd HandBrake
 
 # Optionally checkout latest stable tag
-LATEST_TAG=$(git describe --tags --abbrev=0 || true)
-if [ -n "$LATEST_TAG" ]; then
-  echo "Checking out latest tag $LATEST_TAG"
-  git checkout "$LATEST_TAG"
-fi
+# LATEST_TAG=$(git describe --tags --abbrev=0 || true)
+# if [ -n "$LATEST_TAG" ]; then
+#  echo "Checking out latest tag $LATEST_TAG"
+#  git checkout "$LATEST_TAG"
+# fi
 
 # Override to master
 # git checkout master
