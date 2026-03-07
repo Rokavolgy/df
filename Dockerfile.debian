@@ -34,10 +34,10 @@ COPY prepare-gcc-15-minimal.sh /work/prepare-gcc-15-minimal.sh
 RUN chmod +x /work/prepare-gcc-15-minimal.sh
 RUN /work/prepare-gcc-15-minimal.sh
 
-FROM prepare AS static-libs
-
-RUN apt-get install -y gettext autopoint autoconf libfontconfig-dev fontconfig python3-pip python3-venv ninja-build
+RUN apt-get install -y --no-install-recommends gettext autopoint autoconf libfontconfig-dev fontconfig python3-pip python3-venv ninja-build
 RUN python3 -m pip install --upgrade --user meson
+
+FROM prepare AS static-libs
 
 COPY prepare-static-libs-debian.sh /work/prepare-static-libs-debian.sh
 RUN chmod +x /work/prepare-static-libs-debian.sh
