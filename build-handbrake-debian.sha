@@ -67,6 +67,10 @@ rm -rf HandBrake
 git clone https://github.com/HandBrake/HandBrake.git
 cd HandBrake
 
+echo "Try to fix link time optimization."
+sed -i 's/--enable-lto/--enable-lto --enable-pic/' \
+    ./contrib/ffmpeg/module.defs
+
 # Optionally checkout latest stable tag
 # LATEST_TAG=$(git describe --tags --abbrev=0 || true)
 # if [ -n "$LATEST_TAG" ]; then
@@ -82,7 +86,7 @@ export HB_BUILD_STATIC=1
 
 # Configure and build CLI only. We built system x264 and libmp3lame, but also allow HandBrake to build bundled codecs if needed.
 # --disable-gtk ensures no GUI dependencies are required.
-PKG_CONFIG_PATH="$PKG_CONFIG_PATH" CPPFLAGS="$CPPFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" ./configure --disable-gtk --disable-nvenc --disable-qsv -launch-jobs=$(nproc) --force --no-harden --lto thin --launch
+PKG_CONFIG_PATH="$PKG_CONFIG_PATH" CPPFLAGS="$CPPFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" ./configure --disable-gtk --disable-nvenc --disable-qsv -launch-jobs=$(nproc) --force --no-harden --lto on --launch
 
 # Install HandBrakeCLI to /usr/local
 make --directory=build install
