@@ -107,7 +107,7 @@ cd x264
 # Example: git checkout stable
 # Use default branch for latest stable-ish code
 ./configure --enable-static --disable-shared --enable-pic --prefix="$PREFIX"
-make -j"$NPROC"
+make -j$(nproc)
 make install
 ldconfig
 
@@ -141,7 +141,7 @@ cmake -G"Unix Makefiles" \
   -DCMAKE_INSTALL_PREFIX="$PREFIX" \
   -DENABLE_SHARED=OFF -DENABLE_STATIC=ON \
   -DWITH_JPEG8=ON .
-make -j"$NPROC"
+make -j$(nproc)
 make install
 
 #pkg-config --static --libs libturbojpeg || true
@@ -171,7 +171,7 @@ wget -q https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar
 tar xf lame-3.100.tar.gz
 cd lame-3.100
 ./configure --enable-static --disable-shared --prefix="$PREFIX"
-make -j"$NPROC" > /dev/null
+make -j$(nproc) > /dev/null
 make install
 ldconfig
 
@@ -207,7 +207,7 @@ git clone --depth 1 https://github.com/numactl/numactl.git
 cd numactl
 ./autogen.sh || true
 ./configure --prefix="$PREFIX" --enable-static --disable-shared
-make -j"$NPROC"
+make -j$(nproc)
 make install
 
 # -----------------------------------------------------------------------------
@@ -219,7 +219,7 @@ git clone --depth 1 https://github.com/xiph/speex.git speex
 cd speex
 ./autogen.sh || true
 ./configure --prefix="$PREFIX" --enable-static --disable-shared --with-pic
-make -j"$NPROC"
+make -j$(nproc)
 make install
 cd ..
 
@@ -243,7 +243,7 @@ cd libvpx
             --disable-docs \
             --disable-runtime-cpu-detect
 
-make -j"$NPROC"
+make -j$(nproc)
 make install
 
 #libopus
@@ -254,7 +254,7 @@ cd opus
 ./configure --prefix="$PREFIX" \
             --enable-static --disable-shared \
             --with-pic
-make -j"$NPROC"
+make -j$(nproc)
 make install
 #verify
 
@@ -270,7 +270,7 @@ git clone --depth 1 https://github.com/xiph/ogg.git
 cd ogg
 ./autogen.sh
 ./configure --prefix="$PREFIX" --enable-static --disable-shared
-make -j"$NPROC"
+make -j$(nproc)
 make install
 cd ..
 
@@ -279,14 +279,14 @@ git clone --depth 1 https://github.com/xiph/vorbis.git
 cd vorbis
 ./autogen.sh
 ./configure --prefix="$PREFIX" --enable-static --disable-shared
-make -j"$NPROC"
+make -j$(nproc)
 make install
 
 # libjansson
 git clone --depth 1 https://github.com/akheron/jansson.git
 cd jansson
 cmake -DCMAKE_INSTALL_PREFIX="$PREFIX" -DBUILD_SHARED_LIBS=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON .
-make -j"$NPROC"
+make -j$(nproc)
 make install
 
 #fix for fribidi
