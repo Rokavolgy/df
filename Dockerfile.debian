@@ -2,6 +2,10 @@ FROM debian:bullseye-slim AS prepare
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+ARG AVX-512
+
+ENV AVX-512=$AVX-512
+
 RUN apt-get update && apt-get install -y \
     build-essential \
     git \
