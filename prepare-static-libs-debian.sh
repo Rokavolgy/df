@@ -40,7 +40,7 @@ export PATH=/opt/gcc-15/bin:$HOME/.local/bin:$PATH
 export PREFIX=/usr/local
 export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
 export CPPFLAGS="-I$PREFIX/include -I/usr/include $CPPFLAGS"
-export CFLAGS="-I$PREFIX/include -I/usr/include -O3 -mavx2 $CFLAGS"
+export CFLAGS="-I$PREFIX/include -I/usr/include -O3 -march=native $CFLAGS"
 export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib -static -static-libgcc -static-libstdc++ $LDFLAGS"
 export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
 which gcc
