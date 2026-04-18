@@ -32,13 +32,26 @@ which nasm
 which yasm
 
 # Export pkg-config path for /usr/local
-export PREFIX=/usr/local
-export PATH=/opt/gcc-15/bin:$PATH
-export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
-export CPPFLAGS="-I$PREFIX/include -I/usr/include $CPPFLAGS"
-export CFLAGS="-O3 -static-libstdc++ -static-libgcc -march=native -I/usr/include/turbojpeg -I/usr/local/include $CFLAGS"
-export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
-export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
+
+if defined AVX-512 (
+    echo avx-512 is set: %AVX-512% using compiler optimizations for server cpu
+    export PREFIX=/usr/local
+    export PATH=/opt/gcc-15/bin:$PATH
+    export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
+    export CPPFLAGS="-I$PREFIX/include -I/usr/include $CPPFLAGS"
+    export CFLAGS="-O3 -static-libstdc++ -static-libgcc -march=icelake-server -mprefer-vector-width=512 -fno-semantic-interposition -falign-functions=32 -falign-loops=32 -fipa-reorder-for-locality -I/usr/include/turbojpeg -I/usr/local/include $CFLAGS"
+    export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
+    export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
+) else (
+    echo using native compilation
+    export PREFIX=/usr/local
+    export PATH=/opt/gcc-15/bin:$PATH
+    export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
+    export CPPFLAGS="-I$PREFIX/include -I/usr/include $CPPFLAGS"
+    export CFLAGS="-O3 -static-libstdc++ -static-libgcc -march=native -I/usr/include/turbojpeg -I/usr/local/include $CFLAGS"
+    export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib $LDFLAGS"
+    export LD_LIBRARY_PATH="$PREFIX/lib64:$PREFIX/lib:$LD_LIBRARY_PATH"
+)
 
 which gcc
 gcc --version
