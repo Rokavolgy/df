@@ -33,8 +33,8 @@ which yasm
 
 # Export pkg-config path for /usr/local
 
-if defined AVX-512 (
-    echo avx-512 is set: %AVX-512% using compiler optimizations for server cpu
+if defined AVX_512 (
+    echo avx-512 is set: %AVX_512% using compiler optimizations for server cpu
     export PREFIX=/usr/local
     export PATH=/opt/gcc-15/bin:$PATH
     export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
