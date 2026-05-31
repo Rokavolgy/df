@@ -100,7 +100,9 @@ echo "Building x264 from source"
 
 cd "$WORKDIR"
 rm -rf x264
-git clone https://code.videolan.org/videolan/x264.git
+# git clone https://code.videolan.org/videolan/x264.git
+# use mirror since videolan's sometimes broken
+git clone https://github.com/mirror/x264.git
 cd x264
 
 # Optionally checkout a stable tag. Comment out if you want latest master.
