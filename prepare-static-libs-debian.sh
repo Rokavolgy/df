@@ -327,7 +327,7 @@ cd ..
 #harfbuzz
 git clone --depth 1 https://github.com/harfbuzz/harfbuzz.git
 cd harfbuzz
-meson setup build -Ddefault_library=static -Dglib=disabled -Dgraphite=enabled -Dintrospection=disabled -Dtests=disabled -Dprefix="$PREFIX"
+meson setup build -Ddefault_library=static -Dglib=disabled -Dgraphite=enabled -Dintrospection=disabled -Dtests=disabled -Dutilities=disabled -Dprefix="$PREFIX"
 meson compile -C build
 meson install -C build
 cd ..
