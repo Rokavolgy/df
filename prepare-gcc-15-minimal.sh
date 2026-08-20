@@ -11,9 +11,9 @@ apt install -y \
   texinfo \
   lld
 
-wget https://ftp.gnu.org/gnu/gcc/gcc-15.2.0/gcc-15.2.0.tar.xz
-tar -xf gcc-15.2.0.tar.xz
-cd gcc-15.2.0
+wget https://ftp.gnu.org/gnu/gcc/gcc-16.2.0/gcc-16.2.0.tar.xz
+tar -xf gcc-16.2.0.tar.xz
+cd gcc-16.2.0
 export LDFLAGS="-fuse-ld=lld"
 ./contrib/download_prerequisites
 
