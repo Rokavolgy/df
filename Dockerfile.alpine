@@ -23,12 +23,10 @@ RUN git clone --depth 1 https://github.com/microsoft/mimalloc.git . && \
 
 WORKDIR /tmp/handbrake
 RUN git clone --depth 1 https://github.com/HandBrake/HandBrake.git . && \
-    ./configure \
-        --disable-gtk \
-        --launch-jobs=$(nproc) \
-        --extra-cflags="-I/tmp/mimalloc/include" \
-        --extra-ldflags="-L/tmp/mimalloc/build -lmimalloc -lpthread -lrt" \
-        --launch && \
+    echo "GCC.args.extra += -I/tmp/mimalloc/include" > custom.defs && \
+    echo "TEST.GCC.args.extra += -L/tmp/mimalloc/build -lmimalloc -lpthread -lrt" >> custom.defs && \
+    ./configure --disable-gtk && \
+    make -C build -j$(nproc) && \
     strip build/HandBrakeCLI
 
 WORKDIR /export
