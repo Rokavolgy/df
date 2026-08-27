@@ -1,0 +1,32 @@
+name: Build HandBrake (Musl + mimalloc)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and extract zip archive
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          target: exporter
+          outputs: type=local,dest=./dist
+
+      - name: Upload HandBrake artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: handbrake-musl-mimalloc
+          path: ./dist/handbrake-musl-mimalloc.zip
+          if-no-files-found: error
