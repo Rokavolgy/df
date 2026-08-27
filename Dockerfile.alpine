@@ -1,0 +1,39 @@
+# syntax=docker/dockerfile:1
+FROM alpine:latest AS builder
+#experimental
+RUN apk update && apk add --no-cache \
+    autoconf automake build-base bzip2 cmake coreutils curl file \
+    git jansson-dev lame-dev libass-dev libjpeg-turbo-dev libtheora-dev \
+    libtool libvorbis-dev libvpx-dev libxml2-dev m4 make meson nasm \
+    ninja numactl-dev opus-dev patch pkgconf python3 speex-dev tar \
+    x264-dev x265-dev yasm zlib-dev zip
+
+WORKDIR /tmp/mimalloc
+RUN git clone --depth 1 https://github.com/microsoft/mimalloc.git . && \
+    mkdir build && cd build && \
+    cmake -G Ninja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DMI_BUILD_SHARED=OFF \
+        -DMI_BUILD_STATIC=ON \
+        -DMI_BUILD_OBJECTS=OFF \
+        -DMI_BUILD_TESTS=OFF \
+        -DMI_OVERRIDE=ON \
+        .. && \
+    ninja
+
+WORKDIR /tmp/handbrake
+RUN git clone --depth 1 https://github.com/HandBrake/HandBrake.git . && \
+    ./configure \
+        --disable-gtk \
+        --launch-jobs=$(nproc) \
+        --extra-cflags="-I/tmp/mimalloc/include" \
+        --extra-ldflags="-L/tmp/mimalloc/build -lmimalloc -lpthread -lrt" \
+        --launch && \
+    strip build/HandBrakeCLI
+
+WORKDIR /export
+RUN cp /tmp/handbrake/build/HandBrakeCLI . && \
+    zip -9 handbrake-musl-mimalloc.zip HandBrakeCLI
+
+FROM scratch AS exporter
+COPY --from=builder /export/handbrake-musl-mimalloc.zip /
