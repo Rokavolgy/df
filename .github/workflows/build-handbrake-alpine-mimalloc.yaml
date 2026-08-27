@@ -3,7 +3,7 @@ name: Build HandBrake (Musl + mimalloc)
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ "main2" ]
 
 jobs:
   build:
@@ -20,7 +20,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./Dockerfile
+          file: ./Dockerfile.alpine
           target: exporter
           outputs: type=local,dest=./dist
 
