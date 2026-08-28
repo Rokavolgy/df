@@ -8,6 +8,14 @@ RUN apk update && apk add --no-cache \
     ninja numactl-dev opus-dev patch pkgconf python3 speex-dev tar \
     x264-dev x265-dev yasm zlib-dev zip
 
+RUN apk update && apk add --no-cache \
+    autoconf automake build-base bzip2 cmake coreutils curl file \
+    git jansson-dev jansson-static lame-dev lame-static libass-dev libass-static \
+    libjpeg-turbo-dev libjpeg-turbo-static libtheora-dev libtheora-static \
+    libtool libvorbis-dev libvorbis-static libvpx-dev libvpx-static libxml2-dev libxml2-static \
+    m4 make meson nasm ninja numactl-dev opus-dev opus-static patch pkgconf \
+    python3 speex-dev speex-static tar x264-dev x264-static x265-dev x265-static yasm zlib-dev zlib-static zip
+
 WORKDIR /tmp/mimalloc
 RUN git clone --depth 1 https://github.com/microsoft/mimalloc.git . && \
     mkdir build && cd build && \
