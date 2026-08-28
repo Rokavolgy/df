@@ -10,7 +10,7 @@ RUN apk update && apk add --no-cache \
 
 RUN apk update && apk add --no-cache \
     autoconf automake build-base bzip2 cmake coreutils curl file \
-    git jansson-dev jansson-static lame-dev lame-libs libass-dev libass-libs \
+    git jansson-dev jansson-static lame-dev lame-libs libass-dev \
     libjpeg-turbo-dev libjpeg-turbo-static libtheora-dev libtheora-static \
     libtool libvorbis-dev libvorbis-static libvpx-dev libvpx-utils libxml2-dev libxml2-static \
     m4 make meson nasm ninja numactl-dev opus-dev opus-tools patch pkgconf \
@@ -28,6 +28,90 @@ RUN git clone --depth 1 https://github.com/microsoft/mimalloc.git . && \
         -DMI_OVERRIDE=ON \
         .. && \
     ninja
+
+WORKDIR /tmp/libs
+RUN apk add --no-cache wget && \
+    export PREFIX=/usr/local && \
+    export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH" && \
+    export CPPFLAGS="-I$PREFIX/include -I/usr/include" && \
+    export LDFLAGS="-L$PREFIX/lib64 -L$PREFIX/lib -static -static-libgcc" && \
+    \
+    # zlib
+    git clone https://github.com/madler/zlib.git && \
+    cd zlib && \
+    ./configure --prefix=$PREFIX --static && \
+    make -j$(nproc) && make install && \
+    cd .. && \
+    \
+    # x264
+    git clone https://github.com/mirror/x264.git && \
+    cd x264 && \
+    ./configure --enable-static --disable-shared --enable-pic --prefix="$PREFIX" && \
+    make -j$(nproc) && make install && \
+    cd .. && \
+    \
+    # libjpeg-turbo
+    git clone --depth 1 https://github.com/libjpeg-turbo/libjpeg-turbo.git && \
+    cd libjpeg-turbo && \
+    cmake -G"Unix Makefiles" \
+      -DCMAKE_INSTALL_PREFIX="$PREFIX" \
+      -DENABLE_SHARED=OFF -DENABLE_STATIC=ON \
+      -DWITH_JPEG8=ON . && \
+    make -j$(nproc) && make install && \
+    cd .. && \
+    \
+    # lame
+    wget -q https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz && \
+    tar xf lame-3.100.tar.gz && \
+    cd lame-3.100 && \
+    ./configure --enable-static --disable-shared --prefix="$PREFIX" && \
+    make -j$(nproc) && make install && \
+    cd .. && \
+    \
+    # ogg
+    git clone --depth 1 https://github.com/xiph/ogg.git && \
+    cd ogg && \
+    ./autogen.sh && \
+    ./configure --prefix="$PREFIX" --enable-static --disable-shared && \
+    make -j$(nproc) && make install && \
+    cd .. && \
+    \
+    # vorbis
+    git clone --depth 1 https://github.com/xiph/vorbis.git && \
+    cd vorbis && \
+    ./autogen.sh && \
+    ./configure --prefix="$PREFIX" --enable-static --disable-shared && \
+    make -j$(nproc) && make install && \
+    cd .. && \
+    \
+    # opus
+    git clone --depth 1 https://github.com/xiph/opus.git && \
+    cd opus && \
+    ./autogen.sh || true && \
+    ./configure --prefix="$PREFIX" --enable-static --disable-shared --with-pic && \
+    make -j$(nproc) && make install && \
+    cd .. && \
+    \
+    # libvpx
+    git clone --depth 1 https://chromium.googlesource.com/webm/libvpx && \
+    cd libvpx && \
+    ./configure --prefix="$PREFIX" \
+                --enable-static --disable-shared \
+                --disable-examples --disable-unit-tests \
+                --disable-docs --disable-runtime-cpu-detect && \
+    make -j$(nproc) && make install && \
+    cd .. && \
+    \
+    # speex
+    git clone --depth 1 https://github.com/xiph/speex.git && \
+    cd speex && \
+    ./autogen.sh || true && \
+    ./configure --prefix="$PREFIX" --enable-static --disable-shared --with-pic && \
+    make -j$(nproc) && make install && \
+    cd .. && \
+    \
+    # libvorbis dependencies are handled above
+    ldconfig || true
 
 WORKDIR /tmp/handbrake
 RUN git clone --depth 1 https://github.com/HandBrake/HandBrake.git . && \
