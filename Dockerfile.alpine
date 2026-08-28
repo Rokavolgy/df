@@ -3,7 +3,7 @@ FROM alpine:latest AS builder
 #experimental
 RUN apk update && apk add --no-cache \
     autoconf automake build-base bzip2 cmake coreutils curl file \
-    git jansson-dev lame-dev libass-dev libjpeg-turbo-dev libtheora-dev \
+    git jansson-dev jansson-static lame-dev libass-dev libjpeg-turbo-dev libjpeg-turbo-static libtheora-dev \
     libtool libvorbis-dev libvpx-dev libxml2-dev m4 make meson nasm \
     ninja numactl-dev opus-dev patch pkgconf python3 speex-dev tar \
     x264-dev x265-dev yasm zlib-dev zip
